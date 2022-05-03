@@ -11,7 +11,6 @@ const Hello: React.FC<Props> = () => {
     const [currentLanguage, setLanguage] = useState('en');
 
     const changeLanguage = (value: string): void => {
-        console.log(value)
         i18n
             .changeLanguage(value)
             .then(() => setLanguage(value))
