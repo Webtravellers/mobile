@@ -9,6 +9,8 @@
             "es2017"
         ],
         "moduleResolution": "node",
+        "module": "esnext",
+        "resolveJsonModule": true,
         "noEmit": true,
         "strict": true,
         "target": "esnext"
