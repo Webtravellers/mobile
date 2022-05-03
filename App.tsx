@@ -1,56 +1,101 @@
-import React, { useState } from 'react';
-import './src/assets/languages/i18n'
-import { useTranslation } from 'react-i18next';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+import Icon from 'react-native-vector-icons/AntDesign';
+import './src/assets/languages/i18n';
+import HomeScreen from './src/screens/HomeScreen';
 
-export type Props = {};
+const Tab = createBottomTabNavigator();
 
-const Hello: React.FC<Props> = () => {
-    const { t, i18n } = useTranslation();
-
-    const [currentLanguage, setLanguage] = useState('en');
-
-    const changeLanguage = (value: string): void => {
-        i18n
-            .changeLanguage(value)
-            .then(() => setLanguage(value))
-            .catch(err => console.log(err));
-    };
-
+const HomeStack = createNativeStackNavigator()
+const HomeStackScreen = () => {
     return (
-        <View style={styles.container}>
-            <Text style={styles.greeting}>
-                {t('hello')}
-            </Text>
-            <View>
-                <Button
-                    title="Türkçeasd"
-                    accessibilityLabel="increment"
-                    onPress={() => changeLanguage("tr")}
-                    color="blue"
+        <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+            <HomeStack.Screen name='Home' component={HomeScreen} />
+        </HomeStack.Navigator>
+    )
+}
+
+const ProfileStack = createNativeStackNavigator()
+const ProfileStackScreen = () => {
+    return (
+        <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
+            <ProfileStack.Screen name='Profile' component={HomeScreen} />
+        </ProfileStack.Navigator>
+    )
+}
+
+const DiscoverStack = createNativeStackNavigator()
+const DiscoverStackScreen = () => {
+    return (
+        <DiscoverStack.Navigator screenOptions={{ headerShown: false }}>
+            <DiscoverStack.Screen name='Discover' component={HomeScreen} />
+        </DiscoverStack.Navigator>
+    )
+}
+
+const NetworkStack = createNativeStackNavigator()
+const NetworkStackScreen = () => {
+    return (
+        <NetworkStack.Navigator screenOptions={{ headerShown: false }}>
+            <NetworkStack.Screen name='Network' component={HomeScreen} />
+        </NetworkStack.Navigator>
+    )
+}
+
+const App: React.FC<any> = () => {
+    return (
+        <NavigationContainer>
+            <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: "#895DB0" }}>
+                <Tab.Screen
+                    name="Keşfet"
+                    component={HomeStackScreen}
+                    options={{
+                        tabBarIcon: (props) => (
+                            <Icon name="home" {...props} />
+                        ),
+                    }}
                 />
-                <Button
-                    title="English"
-                    accessibilityLabel="decrement"
-                    onPress={() => changeLanguage("en")}
-                    color="red"
+                <Tab.Screen
+                    name="Ara"
+                    component={DiscoverStackScreen}
+                    options={{
+                        tabBarIcon: (props) => (
+                            <Icon name="search1" {...props} />
+                        ),
+                    }}
                 />
-            </View>
-        </View>
+                <Tab.Screen
+                    name="Ağ"
+                    component={NetworkStackScreen}
+                    options={{
+                        tabBarIcon: (props) => (
+                            <Icon name="pluscircleo" {...props} />
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="Planla"
+                    component={HomeStackScreen}
+                    options={{
+                        tabBarIcon: (props) => (
+                            <Icon name="hearto" {...props} />
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="Profil"
+                    component={ProfileStackScreen}
+                    options={{
+                        tabBarIcon: (props) => (
+                            <Icon name="user" {...props} />
+                        ),
+                    }}
+                />
+            </Tab.Navigator>
+        </NavigationContainer>
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    greeting: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        margin: 16
-    }
-});
-
-export default Hello;
+export default App;
