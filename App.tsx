@@ -1,64 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
+import './src/assets/languages/i18n'
+import { useTranslation } from 'react-i18next';
 import { Button, StyleSheet, Text, View } from 'react-native';
 
-export type Props = {
-  name: string;
-  baseEnthusiasmLevel?: number;
-};
+export type Props = {};
 
-const Hello: React.FC<Props> = ({
-  name,
-  baseEnthusiasmLevel = 0
-}) => {
-  const [enthusiasmLevel, setEnthusiasmLevel] = React.useState(
-    baseEnthusiasmLevel
-  );
+const Hello: React.FC<Props> = () => {
+    const { t, i18n } = useTranslation();
 
-  const onIncrement = () =>
-    setEnthusiasmLevel(enthusiasmLevel + 1);
-  const onDecrement = () =>
-    setEnthusiasmLevel(
-      enthusiasmLevel > 0 ? enthusiasmLevel - 1 : 0
+    const [currentLanguage, setLanguage] = useState('en');
+
+    const changeLanguage = (value: string): void => {
+        console.log(value)
+        i18n
+            .changeLanguage(value)
+            .then(() => setLanguage(value))
+            .catch(err => console.log(err));
+    };
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.greeting}>
+                {t('hello')}
+            </Text>
+            <View>
+                <Button
+                    title="Türkçeasd"
+                    accessibilityLabel="increment"
+                    onPress={() => changeLanguage("tr")}
+                    color="blue"
+                />
+                <Button
+                    title="English"
+                    accessibilityLabel="decrement"
+                    onPress={() => changeLanguage("en")}
+                    color="red"
+                />
+            </View>
+        </View>
     );
-
-  const getExclamationMarks = (numChars: number) =>
-    numChars > 0 ? Array(numChars + 1).join('!') : '';
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.greeting}>
-        Hello {name}
-        {getExclamationMarks(enthusiasmLevel)}
-      </Text>
-      <View>
-        <Button
-          title="Increase enthusiasm"
-          accessibilityLabel="increment"
-          onPress={onIncrement}
-          color="blue"
-        />
-        <Button
-          title="Decrease enthusiasm"
-          accessibilityLabel="decrement"
-          onPress={onDecrement}
-          color="red"
-        />
-      </View>
-    </View>
-  );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  greeting: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    margin: 16
-  }
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    greeting: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        margin: 16
+    }
 });
 
 export default Hello;
