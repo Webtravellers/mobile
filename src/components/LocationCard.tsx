@@ -2,7 +2,7 @@ import { Block, Text } from 'galio-framework';
 import React from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Location from '../types/Location';
+import Location from '../types/LocationModel';
 
 export type LocationCardProps = {
     card: Location,
@@ -15,16 +15,16 @@ const LocationCard:React.FC<LocationCardProps> = ({card, navigation}) => {
     <Block style={{margin: 10}}>
       <TouchableOpacity activeOpacity={0.75} style={{borderRadius: 10}} onPress={() => navigation.navigate("LocationDetail", {...card})}>
         <ImageBackground
-          source={{uri: card?.image}}
+          source={{uri: card?.photos[0] ?? "https://cdn.otelleri.net/landing/ankara/gezi-rehberi/anitkabir-2095-f6.jpg"}}
           style={styles.image}
           borderRadius={10}
         >
           <View style={{flexDirection: "row", justifyContent: "space-between"}}>
             <Block flex row>
-                <Text style={styles.star}>  
+                {/* <Text style={styles.star}>  
                   <Icon size={15} name='staro' />
                   {" "}{card?.rate ?? 5.0}
-                </Text>
+                </Text> */}
             </Block>
             <Block>
               <Text style={styles.star}>
@@ -35,8 +35,8 @@ const LocationCard:React.FC<LocationCardProps> = ({card, navigation}) => {
         </ImageBackground>
         
         <View>
-            <Text bold>{card?.title ?? ""}</Text>
-            <Text muted>{card?.subTitle ?? ""}</Text>
+            <Text bold>{card?.name ?? ""}</Text>
+            <Text muted>{card?.city.cityName ?? ""}</Text>
           </View>
       </TouchableOpacity>
     </Block>

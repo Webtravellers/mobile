@@ -1,5 +1,38 @@
 {
     "translation": {
-        "hello": "Merhaba Dünya"
+        "hello": "Merhaba Dünya",
+        "error": "Hata",
+        "success": "Başarılı",
+        "warning": "Uyarı",
+        "info": "Bilgi",
+        "confirm": "Onayla",
+        "cancel": "İptal",
+        "ok": "Tamam",
+        "yes": "Evet",
+        "no": "Hayır",
+        "or": "veya",
+        "and": "ve",
+        "close": "Kapat",
+        "save": "Kaydet",
+        "delete": "Sil",
+        "edit": "Düzenle",
+        
+        "password": "Şifre",
+        "username": "Kullanıcı Adı",
+        "email": "E-posta",
+        "firstname": "İsim",
+        "lastname": "Soyisim",
+        "fullname": "Tam isim",
+
+        "auth": {
+            "registerTitle": "Ücretsiz Kayıt Ol",
+            "register": "Kayıt Ol",
+            "nowSignup": "Hemen Üye Ol",
+            "loginTitle": "Giriş Yap",
+            "login": "Giriş Yap",
+            "privacyPolicy": "Gizlilik Sözleşmesini okudum, onaylıyorum",
+            "approveEmailMessages": "Bülteninizden ileti almak istiyorum.",
+            "forgotPassword": "Şifremi Unuttum"
+        }
     }
 }

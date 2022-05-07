@@ -15,12 +15,12 @@ const LocationCommentListScreen:React.FC<any> = ({route, navigation}) => {
                     <TouchableOpacity activeOpacity={0.5} style={{ width: 50 }} onPress={() => navigation.goBack()}>
                         <Icon name="arrowleft" size={30} color="black" />
                     </TouchableOpacity>
-                    <Text bold h6>{location?.title} Yorumları</Text>
+                    <Text bold h6>{location?.name} Yorumları</Text>
                     <View style={{ width: 50 }} />
                 </View>
             </View>
             <ScrollView style={styles.list}>
-                <Block flex center width={width*0.9}>
+                <View style={styles.comments}>
                     <CommentListItem />
                     <CommentListItem />
                     <CommentListItem />
@@ -31,7 +31,7 @@ const LocationCommentListScreen:React.FC<any> = ({route, navigation}) => {
                     <CommentListItem />
                     <CommentListItem />
                     <CommentListItem />
-                </Block>
+                </View>
             </ScrollView>
         </SafeAreaView>
     )
@@ -49,6 +49,12 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     list: {
+        paddingTop: 40,
+        paddingBottom: 15,
+        paddingHorizontal: 20,
+        height: "100%"
+    },
+    comments: {
     }
 })
 

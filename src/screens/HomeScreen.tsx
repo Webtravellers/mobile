@@ -2,7 +2,7 @@ import { Text } from 'galio-framework'
 import React from 'react'
 import { Button, Dimensions, Image, ImageBackground, SafeAreaView, StyleSheet, View } from 'react-native'
 import Carousel from 'react-native-snap-carousel';
-import Location from '../types/Location';
+import Location from '../types/LocationModel';
 
 const historyLocations = [
     {

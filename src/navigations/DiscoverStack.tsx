@@ -3,16 +3,17 @@ import React from "react"
 import DiscoverScreen from "../screens/DiscoverScreen"
 import LocationCommentListScreen from "../screens/location/LocationCommentListScreen"
 import LocationDetailScreen from "../screens/location/LocationDetailScreen"
-import NavigationRoute from "./NavigationRoutes"
+import ROUTES from "./Routes"
+import Stack from "./Stack"
 
-const Stack = createNativeStackNavigator()
+// const Stack = createNativeStackNavigator()
 
 const DiscoverStack:React.FC<any> = () => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name={NavigationRoute.Discover} component={DiscoverScreen} />
-            <Stack.Screen name={NavigationRoute.LocationDetail} component={LocationDetailScreen} />
-            <Stack.Screen name={NavigationRoute.LocationComments} component={LocationCommentListScreen} />
+            <Stack.Screen name={ROUTES.Discover} component={DiscoverScreen} />
+            <Stack.Screen name={ROUTES.LocationDetail} component={LocationDetailScreen} />
+            <Stack.Screen name={ROUTES.LocationComments} component={LocationCommentListScreen} />
         </Stack.Navigator>
     )
 }

@@ -9,12 +9,13 @@ const { width, height } = Dimensions.get("screen")
 
 const LocationDetailScreen:React.FC<any> = ({ route, navigation }) => {
     const location = route.params
+
     return (
         <View>
             <ScrollView style={styles.root}>
                 <ImageBackground
                     style={{ width: width, height: height * 0.45 }}
-                    source={{ uri: location?.image }}
+                    source={{ uri: location?.photo ?? "https://cdn.otelleri.net/landing/ankara/gezi-rehberi/anitkabir-2095-f6.jpg" }}
                 >
                     <View style={styles.safeArea}>
                         <TouchableOpacity activeOpacity={0.5} style={{ width: 50 }} onPress={() => navigation.goBack()}>
@@ -23,13 +24,13 @@ const LocationDetailScreen:React.FC<any> = ({ route, navigation }) => {
                     </View>
                 </ImageBackground>
                 <View style={{ ...styles.safeArea, paddingVertical: 10 }}>
-                    {location.subTitle && (
+                    {location.city?.cityName && (
                         <Block flex row style={{ alignItems: "center" }}>
                             <IoIcon name="ios-location-sharp" size={15} color="#8bbbbb" />
-                            <Text muted>{location.subTitle}</Text>
+                            <Text muted>{location.city?.cityName}</Text>
                         </Block>
                     )}
-                    <Text h3>{location.title}</Text>
+                    <Text h3>{location.name}</Text>
                     <TouchableOpacity activeOpacity={0.4} onPress={() => navigation.navigate("LocationComments", {...location})}>
                         <Block flex row style={{ alignItems: "center" }}>
                             {[1, 2, 3, 4, 5].map(() => (
@@ -40,16 +41,16 @@ const LocationDetailScreen:React.FC<any> = ({ route, navigation }) => {
                     </TouchableOpacity>
                     <View>
                         <Text style={styles.description}>
-                            Anıtkabir, Türkiye'nin başkenti Ankara'nın Çankaya ilçesinde yer alan Mustafa Kemal Atatürk'ün anıt mezarını içeren komplekstir. Emin Onat ile Orhan Arda'nın tasarımı olan yapı kompleksinin 1944'te başlanan inşası 1953'te tamamlanmıştır.
+                            {location.desc}
                         </Text>
-                        <TouchableOpacity activeOpacity={0.4}>
+                        {/* <TouchableOpacity activeOpacity={0.4}>
                             <Block flex row style={{ alignItems: "center" }}>
                                 <Text color='blue'>
                                     Devamını Oku
                                 </Text>
                                 <MIcon name="keyboard-arrow-down" size={15} />
                             </Block>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
                 </View>
             </ScrollView>
