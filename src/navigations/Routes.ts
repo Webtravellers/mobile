@@ -26,6 +26,7 @@ enum ROUTES {
     ForgotPassword = 'ForgotPassword',
     ResetPassword = 'ResetPassword',
     VerifyEmail = 'VerifyEmail',
+    Filter = "Filter",
 }
 
 export default ROUTES;

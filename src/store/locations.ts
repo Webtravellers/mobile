@@ -1,3 +1,4 @@
+import { LocationType } from './../types/LocationTypeModel';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Location from '../types/LocationModel';
 
@@ -5,15 +6,19 @@ const locaitonSlice = createSlice({
   name: 'locations',
   initialState: {
     locations: [] as Location[],
+    locationTypes: [] as LocationType[],
   },
   reducers: {
     setLocations: (state, action: PayloadAction<Location[]>) => {
       state.locations = action.payload;
+    },
+    setLocationTypes: (state, action: PayloadAction<LocationType[]>) => {
+      state.locationTypes = action.payload;
     }
   },
 });
 
-export const {setLocations} = locaitonSlice.actions;
+export const {setLocations, setLocationTypes} = locaitonSlice.actions;
 
 export default locaitonSlice.reducer;
 

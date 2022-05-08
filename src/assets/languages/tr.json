@@ -16,6 +16,7 @@
         "save": "Kaydet",
         "delete": "Sil",
         "edit": "Düzenle",
+        "search": "Ara",
         
         "password": "Şifre",
         "username": "Kullanıcı Adı",
@@ -33,6 +34,7 @@
             "privacyPolicy": "Gizlilik Sözleşmesini okudum, onaylıyorum",
             "approveEmailMessages": "Bülteninizden ileti almak istiyorum.",
             "forgotPassword": "Şifremi Unuttum"
-        }
+        },
+        "filter": "Filtrele"
     }
 }

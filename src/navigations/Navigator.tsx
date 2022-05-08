@@ -12,6 +12,7 @@ import { setUser } from "../store/user";
 import { UserModel } from "../types/userModel";
 import AuthStack from "./AuthStack";
 import DiscoverStack from "./DiscoverStack";
+import FilterStack from "./FilterStack";
 import HomeStack from "./HomeStack";
 import NetworkStack from "./NetworkNavigator";
 import ProfileStack from "./profileStack";
@@ -49,7 +50,7 @@ const Navigator: React.FC<any> = () => {
                     />
                     <Tab.Screen
                         name="Ara"
-                        component={DiscoverStack}
+                        component={FilterStack}
                         options={{
                             tabBarIcon: (props) => (
                                 <Icon name="search1" {...props} />

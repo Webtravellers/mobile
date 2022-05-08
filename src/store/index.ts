@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
+import cities from './cities';
 import locations from './locations';
 import user from './user';
 
 export const store = configureStore({
   reducer: {
     user: user,
-    locations: locations
+    locations: locations,
+    cities: cities,
   }
 });
 
