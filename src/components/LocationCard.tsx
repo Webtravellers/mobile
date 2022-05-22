@@ -7,16 +7,17 @@ import Location from '../types/LocationModel';
 export type LocationCardProps = {
     card: Location,
     navigation: any,
+    css?: any
 }
 
-const LocationCard:React.FC<LocationCardProps> = ({card, navigation}) => {
+const LocationCard:React.FC<LocationCardProps> = ({card, navigation, css}) => {
 
     return (
     <Block style={{margin: 10}}>
       <TouchableOpacity activeOpacity={0.75} style={{borderRadius: 10}} onPress={() => navigation.navigate("LocationDetail", {...card})}>
         <ImageBackground
           source={{uri: card?.photos[0] ?? "https://cdn.otelleri.net/landing/ankara/gezi-rehberi/anitkabir-2095-f6.jpg"}}
-          style={styles.image}
+          style={{...styles.image, ...css?.image}}
           borderRadius={10}
         >
           <View style={{flexDirection: "row", justifyContent: "space-between"}}>

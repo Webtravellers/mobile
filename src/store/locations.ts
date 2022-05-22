@@ -7,6 +7,7 @@ const locaitonSlice = createSlice({
   initialState: {
     locations: [] as Location[],
     locationTypes: [] as LocationType[],
+    filteredLocations: [] as Location[],
   },
   reducers: {
     setLocations: (state, action: PayloadAction<Location[]>) => {
@@ -14,11 +15,14 @@ const locaitonSlice = createSlice({
     },
     setLocationTypes: (state, action: PayloadAction<LocationType[]>) => {
       state.locationTypes = action.payload;
+    },
+    setFilterLocations: (state, action: PayloadAction<Location[]>) => {
+      state.filteredLocations = action.payload;
     }
   },
 });
 
-export const {setLocations, setLocationTypes} = locaitonSlice.actions;
+export const {setLocations, setLocationTypes, setFilterLocations} = locaitonSlice.actions;
 
 export default locaitonSlice.reducer;
 

@@ -15,6 +15,7 @@ import DiscoverStack from "./DiscoverStack";
 import FilterStack from "./FilterStack";
 import HomeStack from "./HomeStack";
 import NetworkStack from "./NetworkNavigator";
+import PlanningStack from "./PlanningStack";
 import ProfileStack from "./profileStack";
 import ROUTES from "./Routes";
 
@@ -35,7 +36,7 @@ const Navigator: React.FC<any> = () => {
 
     return (
         <NavigationContainer>
-            {!user.token || !user._id ? (
+            {!user.token && !user._id  ? ( //&& to || 
                 <AuthStack />
             ) : (
                 <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: "#895DB0" }}>
@@ -58,7 +59,7 @@ const Navigator: React.FC<any> = () => {
                         }}
                     />
                     <Tab.Screen
-                        name="Ağ"
+                        name="Hatıralar"
                         component={NetworkStack}
                         options={{
                             tabBarIcon: (props) => (
@@ -68,7 +69,7 @@ const Navigator: React.FC<any> = () => {
                     />
                     <Tab.Screen
                         name="Planla"
-                        component={HomeStack}
+                        component={PlanningStack}
                         options={{
                             tabBarIcon: (props) => (
                                 <Icon name="hearto" {...props} />

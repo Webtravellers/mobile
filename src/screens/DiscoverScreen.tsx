@@ -1,6 +1,6 @@
 import { Block, Text } from 'galio-framework'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Dimensions, ImageBackground, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Dimensions, Image, ImageBackground, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import LocationCard from '../components/LocationCard'
@@ -69,7 +69,8 @@ const DiscoverScreen: React.FC<any> = ({ navigation }) => {
             <ScrollView>
                 <ImageBackground source={{ uri: "https://cdn.goturkiye.com/goturkey/eastern-camping-goturkey.jpg" }} style={styles.topImage}>
                     <Block center style={{ marginVertical: 30 }}>
-                        <Text h3 bold>Dijital Asistan</Text>
+                        <Image source={require("../assets/static/bihatira.png")} style={{width: 150, height: 50}} resizeMode="contain" />
+                        {/* <Text h2 bold color='#ff7426' style={{fontFamily: "Lobster"}}>Bi'Hatıra</Text> */}
                     </Block>
                 </ImageBackground>
                 <View style={styles.root}>

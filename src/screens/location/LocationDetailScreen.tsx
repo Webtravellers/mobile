@@ -15,7 +15,7 @@ const LocationDetailScreen:React.FC<any> = ({ route, navigation }) => {
             <ScrollView style={styles.root}>
                 <ImageBackground
                     style={{ width: width, height: height * 0.45 }}
-                    source={{ uri: location?.photo ?? "https://cdn.otelleri.net/landing/ankara/gezi-rehberi/anitkabir-2095-f6.jpg" }}
+                    source={{ uri: location?.photos[0] ?? "https://cdn.otelleri.net/landing/ankara/gezi-rehberi/anitkabir-2095-f6.jpg" }}
                 >
                     <View style={styles.safeArea}>
                         <TouchableOpacity activeOpacity={0.5} style={{ width: 50 }} onPress={() => navigation.goBack()}>

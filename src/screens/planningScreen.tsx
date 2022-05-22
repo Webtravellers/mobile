@@ -1,27 +1,31 @@
-import { Formik } from 'formik'
+import { Picker } from '@react-native-picker/picker'
 import { Button, Input, Text } from 'galio-framework'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
-import colors from '../themes/colors'
+import { useDispatch, useSelector } from 'react-redux'
 import i18n from '../assets/languages/i18n'
-import { Picker } from '@react-native-picker/picker';
-import { RootState } from '../store'
-import { useSelector } from 'react-redux'
-import { LocationService } from '../services/locationService'
-import { useDispatch } from 'react-redux'
-import { setFilterLocations, setLocationTypes } from '../store/locations'
-import { LocationType } from '../types/LocationTypeModel'
+import ROUTES from '../navigations/Routes'
 import { CityService } from '../services/cityService'
+import { LocationService } from '../services/locationService'
+import { RootState } from '../store'
+import { setCities } from '../store/cities'
+import { setFilterLocations, setLocationTypes } from '../store/locations'
+import colors from '../themes/colors'
 import { City } from '../types/CityModel'
 import { LocationFilter } from '../types/locationFilterModel'
-import { setCities } from '../store/cities'
 import Location from '../types/LocationModel'
-import ROUTES from '../navigations/Routes'
+import { LocationType } from '../types/LocationTypeModel'
+import DatePicker from 'react-native-date-picker'
 
 const locationService = new LocationService()
 
-const FilterScreen: React.FC<any> = ({ navigation }) => {
+const planningScreen: React.FC<any> = ({ navigation }) => {
+    const [startDate, setStartDate] = useState(new Date())
+    const [openStartDate, setOpenStartDate] = useState(false)
+    const [endDate, setEndDate] = useState(new Date())
+    const [openEndDate, setOpenEndDate] = useState(false)
+
     const dispatch = useDispatch()
     const { locationTypes } = useSelector((state: RootState) => state.locations)
     const { cities } = useSelector((state: RootState) => state.cities)
@@ -62,31 +66,58 @@ const FilterScreen: React.FC<any> = ({ navigation }) => {
                     <TouchableOpacity activeOpacity={0.5} style={{ width: 50 }} onPress={() => navigation.goBack()}>
                         <Icon name="arrowleft" size={30} color="black" />
                     </TouchableOpacity>
-                    <Text bold h6>Filtrele</Text>
+                    <Text bold h6>Planla</Text>
                     <View style={{ width: 50 }} />
                 </View>
             </View>
             <View style={{ paddingVertical: 20 }}>
                 <View style={styles.input}>
-                    <Input
-                        borderless
-                        placeholder={i18n.t("search")}
-                        placeholderTextColor={colors.MUTED}
+                    <Text bold>Seyehat Başlangıç Tarihi Seçiniz</Text>
+                    <TouchableOpacity onPress={() => setOpenStartDate(true)} activeOpacity={0.8}>
+                        <Input
+                            borderless
+                            placeholder={startDate.toLocaleDateString("tr")}
+                            placeholderTextColor={colors.MUTED}
+                            editable={false}
+                        />
+                    </TouchableOpacity>
+                    <DatePicker
+                        modal
+                        open={openStartDate}
+                        date={startDate}
+                        mode="date"
+                        onConfirm={(date) => {
+                            setOpenStartDate(false)
+                            setStartDate(date)
+                        }}
+                        onCancel={() => {
+                            setOpenStartDate(false)
+                        }}
                     />
                 </View>
                 <View style={styles.input}>
-                    <Text bold>Seyehat Türünü Seçiniz</Text>
-                    <Picker
-                        style={styles.select}
-                        selectedValue={selectedType}
-                        onValueChange={(itemValue, itemIndex) =>
-                            setSelectedType(itemValue)
-                        }>
-                        <Picker.Item label={i18n.t("all")} value={""} />
-                        {locationTypes.map((type, index) => (
-                            <Picker.Item label={type.name} value={type._id} />
-                        ))}
-                    </Picker>
+                    <Text bold>Seyahat Bitiş Tarihi Seçiniz</Text>
+                    <TouchableOpacity onPress={() => setOpenEndDate(true)} activeOpacity={1}>
+                        <Input
+                            borderless
+                            placeholder={endDate.toLocaleDateString()}
+                            placeholderTextColor={colors.MUTED}
+                            editable={false}
+                        />
+                    </TouchableOpacity>
+                    <DatePicker
+                        modal
+                        open={openEndDate}
+                        date={endDate}
+                        mode="date"
+                        onConfirm={(date) => {
+                            setOpenEndDate(false)
+                            setEndDate(date)
+                        }}
+                        onCancel={() => {
+                            setOpenEndDate(false)
+                        }}
+                    />
                 </View>
                 <View style={styles.input}>
                     <Text bold>Şehir Seçiniz</Text>
@@ -103,8 +134,23 @@ const FilterScreen: React.FC<any> = ({ navigation }) => {
                     </Picker>
                 </View>
 
+                <View style={styles.input}>
+                    <Text bold>Ulaşım Türü Seçiniz</Text>
+                    <Picker
+                        style={styles.select}
+                        selectedValue={selectedType}
+                        onValueChange={(itemValue, itemIndex) =>
+                            setSelectedType(itemValue)
+                        }>
+                        <Picker.Item label={"Özel Araç"} value={"specialVehicle"} />
+                        <Picker.Item label={"Araç Kiralama"} value={"rentACar"} />
+                        <Picker.Item label={"Yerel Ulaşım Araçları"} value={"localVehicle"} />
+                        <Picker.Item label={"Yürüyerek"} value={"onFoot"} />
+                    </Picker>
+                </View>
+
                 <Button color='#2E1BA5' style={styles.button} onPress={handleFilter}>
-                    {i18n.t("filter") + ""}
+                    Plan Oluştur
                 </Button>
             </View>
         </View>
@@ -137,4 +183,5 @@ const styles = StyleSheet.create({
     }
 })
 
-export default FilterScreen
+
+export default planningScreen
