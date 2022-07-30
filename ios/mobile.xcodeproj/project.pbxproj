@@ -30,6 +30,10 @@
 		AAF4CAC2F7A841C4A15409C2 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 738AAD6315D849B8A043B6B4 /* Octicons.ttf */; };
 		CA0AA2F7855F4821BDC63A83 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7EC539F949B94293BFA01042 /* SimpleLineIcons.ttf */; };
 		3825EF712B8B4F2A86379366 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C46FFABCA0FB419CA4F19E08 /* Zocial.ttf */; };
+		BA76C97286EA4A4191240E26 /* AlongSans.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3258FA827AD44E7A104E528 /* AlongSans.otf */; };
+		7559F85018F849CC9F9C62DF /* AlongSansExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 46F8F8BC0BE94E45B372D57A /* AlongSansExtraBold.otf */; };
+		B37E631E64AD40C38D9E2631 /* AlongSansMedium.otf in Resources */ = {isa = PBXBuildFile; fileRef = F421A92881D240A181FF96FB /* AlongSansMedium.otf */; };
+		48DFFB7035004F84A9412FD5 /* Uchen-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59DC81F0C6B6447CBEB29459 /* Uchen-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +80,10 @@
 		738AAD6315D849B8A043B6B4 /* Octicons.ttf */ = {isa = PBXFileReference; name = "Octicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		7EC539F949B94293BFA01042 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		C46FFABCA0FB419CA4F19E08 /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D3258FA827AD44E7A104E528 /* AlongSans.otf */ = {isa = PBXFileReference; name = "AlongSans.otf"; path = "../src/assets/fonts/AlongSans.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		46F8F8BC0BE94E45B372D57A /* AlongSansExtraBold.otf */ = {isa = PBXFileReference; name = "AlongSansExtraBold.otf"; path = "../src/assets/fonts/AlongSansExtraBold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F421A92881D240A181FF96FB /* AlongSansMedium.otf */ = {isa = PBXFileReference; name = "AlongSansMedium.otf"; path = "../src/assets/fonts/AlongSansMedium.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		59DC81F0C6B6447CBEB29459 /* Uchen-Regular.ttf */ = {isa = PBXFileReference; name = "Uchen-Regular.ttf"; path = "../src/assets/fonts/Uchen-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +208,10 @@
 				738AAD6315D849B8A043B6B4 /* Octicons.ttf */,
 				7EC539F949B94293BFA01042 /* SimpleLineIcons.ttf */,
 				C46FFABCA0FB419CA4F19E08 /* Zocial.ttf */,
+				D3258FA827AD44E7A104E528 /* AlongSans.otf */,
+				46F8F8BC0BE94E45B372D57A /* AlongSansExtraBold.otf */,
+				F421A92881D240A181FF96FB /* AlongSansMedium.otf */,
+				59DC81F0C6B6447CBEB29459 /* Uchen-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -317,6 +329,10 @@
 				AAF4CAC2F7A841C4A15409C2 /* Octicons.ttf in Resources */,
 				CA0AA2F7855F4821BDC63A83 /* SimpleLineIcons.ttf in Resources */,
 				3825EF712B8B4F2A86379366 /* Zocial.ttf in Resources */,
+				BA76C97286EA4A4191240E26 /* AlongSans.otf in Resources */,
+				7559F85018F849CC9F9C62DF /* AlongSansExtraBold.otf in Resources */,
+				B37E631E64AD40C38D9E2631 /* AlongSansMedium.otf in Resources */,
+				48DFFB7035004F84A9412FD5 /* Uchen-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

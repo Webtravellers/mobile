@@ -19,7 +19,7 @@ const PostCard = () => {
                 <Icon name='dots-three-vertical' />
             </TouchableOpacity>
         </View>
-        <Image style={styles.postImage} borderRadius={20} source={{uri:"https://images.unsplash.com/photo-1527631746610-bca00a040d60?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8OXx8fGVufDB8fHx8&w=1000&q=80"}}/>
+        <Image style={styles.postImage} source={{uri:"https://images.unsplash.com/photo-1527631746610-bca00a040d60?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8OXx8fGVufDB8fHx8&w=1000&q=80"}}/>
         <View style={styles.bottom}>
             <TouchableOpacity style={styles.bottomInfo}>
                 <AIcon name="heart" color={"tomato"} size={20}/>
@@ -35,31 +35,30 @@ const PostCard = () => {
 
 const styles = StyleSheet.create({
     root: {
-        borderRadius: 20,
+        borderRadius: 5,
         backgroundColor: "white",
-        padding: 10,
         marginBottom: 20,
     },
     cardHeader: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        marginBottom: 20
+        padding: 10,
     },
     userPhoto: {
         width: 48,
         height: 48,
-        borderRadius: 64,
+        borderRadius: 64, 
         marginRight: 10,
     },
     postImage: {
-        height: 300,
-        width: "100%"
+        height: 300
     },
     bottom: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
+        padding: 10,
         marginVertical: 10,
     },
     bottomInfo: {

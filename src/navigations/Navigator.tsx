@@ -6,6 +6,7 @@ import Icon from "react-native-vector-icons/AntDesign";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import SignupScreen from "../screens/auth/SignupScreen";
+import DiscoverScreen from "../screens/DiscoverScreen";
 import StorageService, { StorageKeys } from "../services/StorageService";
 import { RootState } from "../store";
 import { setUser } from "../store/user";
