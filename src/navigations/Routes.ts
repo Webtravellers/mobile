@@ -6,6 +6,7 @@ enum ROUTES {
     Settings = 'Settings',
     Network = 'Network',
     LocationDetail = 'LocationDetail',
+    LocationInnerDetail = 'LocationInnerDetail',
     LocationList = 'LocationList',
     LocationCreate = 'LocationCreate',
     LocationEdit = 'LocationEdit',
