@@ -29,6 +29,7 @@ enum ROUTES {
     VerifyEmail = 'VerifyEmail',
     Filter = "Filter",
     Planning = "Planning",
+    PlanList = "PlanList",
 }
 
 export default ROUTES;

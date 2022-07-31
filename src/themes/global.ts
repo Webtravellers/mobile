@@ -19,5 +19,20 @@ export const GlobalStyles = StyleSheet.create({
         fontSize: 32,
         color: "#333",
         fontWeight: "bold",
+    },
+    input: {
+        fontFamily: "AlongSansExtraBold",
+        backgroundColor: "#f3dec1",
+        borderRadius: 10,
+        padding: 15,
+        marginVertical: 10,
+    },
+    datePicker: {
+        fontFamily: "AlongSansExtraBold",
+        backgroundColor: "#f3dec1",
+        borderRadius: 10,
+        padding: 15,
+        color: "#f3dec1",
+        marginBottom: 10,
     }
 })

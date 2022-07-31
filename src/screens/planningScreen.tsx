@@ -1,156 +1,86 @@
-import { Picker } from '@react-native-picker/picker'
-import { Button, Input, Text } from 'galio-framework'
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Button, Datepicker } from '@ui-kitten/components'
+import { Text } from 'galio-framework'
+import React, { useState } from 'react'
+import { Alert, Dimensions, ImageBackground, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
+import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { useDispatch, useSelector } from 'react-redux'
-import i18n from '../assets/languages/i18n'
-import ROUTES from '../navigations/Routes'
-import { CityService } from '../services/cityService'
 import { LocationService } from '../services/locationService'
+import { TripService } from '../services/tripService'
 import { RootState } from '../store'
-import { setCities } from '../store/cities'
-import { setFilterLocations, setLocationTypes } from '../store/locations'
-import colors from '../themes/colors'
-import { City } from '../types/CityModel'
-import { LocationFilter } from '../types/locationFilterModel'
-import Location from '../types/LocationModel'
-import { LocationType } from '../types/LocationTypeModel'
-import DatePicker from 'react-native-date-picker'
+import { GlobalStyles } from '../themes/global'
+import { TripModel } from '../types/TripModel'
 
 const locationService = new LocationService()
+const HEIGHT = Dimensions.get('window').height
 
 const planningScreen: React.FC<any> = ({ navigation }) => {
-    const [startDate, setStartDate] = useState(new Date())
-    const [openStartDate, setOpenStartDate] = useState(false)
-    const [endDate, setEndDate] = useState(new Date())
-    const [openEndDate, setOpenEndDate] = useState(false)
-
+    const [startDate, setStartDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
+    const [name, setName] = useState('')
     const dispatch = useDispatch()
-    const { locationTypes } = useSelector((state: RootState) => state.locations)
-    const { cities } = useSelector((state: RootState) => state.cities)
+    const { user } = useSelector((state: RootState) => state.user);
 
-    const [selectedCity, setSelectedCity] = useState<string>()
-    const [selectedType, setSelectedType] = useState<string>()
-
-    useEffect(() => {
-        if (!locationTypes || locationTypes.length == 0) {
-            locationService.getAllTypes().then(res => {
-                const types = res.data.data as LocationType[]
-                dispatch(setLocationTypes(types))
-            })
+    const handleNewTrip = () => {
+        const data = {
+            name: name,
+            startDate: startDate ?? "",
+            endDate: endDate ?? "",
         }
-        if (!cities || cities.length == 0) {
-            new CityService().getAll().then(res => {
-                const _cities = res.data.data as City[]
-                dispatch(setCities(_cities))
-            })
-        }
-    }, [])
-
-    const handleFilter = () => {
-        const filter = {
-            city: selectedCity,
-            type: selectedType
-        } as LocationFilter
-        locationService.filter(filter).then(res => {
-            dispatch(setFilterLocations(res.data.data as Location[]))
-            navigation.navigate(ROUTES.LocationList)
+        const tripService = new TripService()
+        tripService.newTrip(user._id, data).then(res => {
+            console.log(res)
+            Alert.alert("Başarılı 🎉", "Gezi planı başarılı bir şekilde oluşturuldu")
+            setName('')
+            setStartDate(null)
+            setEndDate(null)
+        }).catch(err => {
+            Alert.alert("Başarısız 😢", "Gezi planı oluşturma işlemi başarısız oldu. Lütfen değerleri kontrol ediniz.")
+            console.log({...err})
         })
     }
 
     return (
         <View style={styles.root}>
-            <View>
-                <View style={styles.top}>
-                    <TouchableOpacity activeOpacity={0.5} style={{ width: 50 }} onPress={() => navigation.goBack()}>
-                        <Icon name="arrowleft" size={30} color="black" />
-                    </TouchableOpacity>
-                    <Text bold h6>Planla</Text>
-                    <View style={{ width: 50 }} />
-                </View>
-            </View>
-            <View style={{ paddingVertical: 20 }}>
-                <View style={styles.input}>
-                    <Text bold>Seyehat Başlangıç Tarihi Seçiniz</Text>
-                    <TouchableOpacity onPress={() => setOpenStartDate(true)} activeOpacity={0.8}>
-                        <Input
-                            borderless
-                            placeholder={startDate.toLocaleDateString("tr")}
-                            placeholderTextColor={colors.MUTED}
-                            editable={false}
-                        />
-                    </TouchableOpacity>
-                    <DatePicker
-                        modal
-                        open={openStartDate}
-                        date={startDate}
-                        mode="date"
-                        onConfirm={(date) => {
-                            setOpenStartDate(false)
-                            setStartDate(date)
-                        }}
-                        onCancel={() => {
-                            setOpenStartDate(false)
-                        }}
-                    />
-                </View>
-                <View style={styles.input}>
-                    <Text bold>Seyahat Bitiş Tarihi Seçiniz</Text>
-                    <TouchableOpacity onPress={() => setOpenEndDate(true)} activeOpacity={1}>
-                        <Input
-                            borderless
-                            placeholder={endDate.toLocaleDateString()}
-                            placeholderTextColor={colors.MUTED}
-                            editable={false}
-                        />
-                    </TouchableOpacity>
-                    <DatePicker
-                        modal
-                        open={openEndDate}
-                        date={endDate}
-                        mode="date"
-                        onConfirm={(date) => {
-                            setOpenEndDate(false)
-                            setEndDate(date)
-                        }}
-                        onCancel={() => {
-                            setOpenEndDate(false)
-                        }}
-                    />
-                </View>
-                <View style={styles.input}>
-                    <Text bold>Şehir Seçiniz</Text>
-                    <Picker
-                        style={styles.select}
-                        selectedValue={selectedCity}
-                        onValueChange={(itemValue, itemIndex) =>
-                            setSelectedCity(itemValue)
-                        }>
-                        <Picker.Item label={i18n.t("all")} value={""} />
-                        {cities.map((city, index) => (
-                            <Picker.Item label={city.cityName} value={city._id} />
-                        ))}
-                    </Picker>
-                </View>
+            <ImageBackground source={require("../assets/static/loginscreen.jpg")} style={styles.topImage}>
+                <LinearGradient colors={['#ffffff00', '#000000ff']} start={{ x: 0, y: 0.7 }} end={{ x: 0, y: 1 }} style={{ flex: 1, borderRadius: 10, justifyContent: "space-between" }}>
+                    <View style={{ marginTop: 30, padding: 10 }}>
+                        <TouchableOpacity activeOpacity={0.5} style={styles.btn} onPress={() => navigation.goBack()}>
+                            <Icon name="arrowleft" size={30} color="white" />
+                        </TouchableOpacity>
+                    </View>
+                    <Text style={{ fontFamily: "AlongSansExtraBold", color: "#fff", fontSize: 30, padding: 10 }}>
+                        Gezi Planı Oluştur 🛩
+                    </Text>
+                </LinearGradient>
+            </ImageBackground>
+            <View style={{ padding: 20, }}>
+                <TextInput
+                    style={GlobalStyles.input}
+                    placeholder="Gezi Adı"
+                    onChangeText={setName}
+                />
 
-                <View style={styles.input}>
-                    <Text bold>Ulaşım Türü Seçiniz</Text>
-                    <Picker
-                        style={styles.select}
-                        selectedValue={selectedType}
-                        onValueChange={(itemValue, itemIndex) =>
-                            setSelectedType(itemValue)
-                        }>
-                        <Picker.Item label={"Özel Araç"} value={"specialVehicle"} />
-                        <Picker.Item label={"Araç Kiralama"} value={"rentACar"} />
-                        <Picker.Item label={"Yerel Ulaşım Araçları"} value={"localVehicle"} />
-                        <Picker.Item label={"Yürüyerek"} value={"onFoot"} />
-                    </Picker>
-                </View>
+                <Datepicker
+                    style={GlobalStyles.datePicker}
+                    placeholder="Başlangıç Tarihi"
+                    controlStyle={{ backgroundColor: "transparent", borderWidth: 0 }}
+                    accessoryRight={() => <Icon name="calendar" size={20} color="#555" />}
+                    date={startDate}
+                    onSelect={(date) => setStartDate(date)}
+                />
 
-                <Button color='#2E1BA5' style={styles.button} onPress={handleFilter}>
-                    Plan Oluştur
+                <Datepicker
+                    style={GlobalStyles.datePicker}
+                    placeholder="Bitiş Tarihi"
+                    controlStyle={{ backgroundColor: "transparent", borderWidth: 0 }}
+                    accessoryRight={() => <Icon name="calendar" size={20} color="#555" />}
+                    date={endDate}
+                    onSelect={(date) => setEndDate(date)}
+                />
+
+                <Button size={"giant"} style={styles.button} onPress={handleNewTrip}>
+                    Plan Oluştur ✨
                 </Button>
             </View>
         </View>
@@ -158,22 +88,34 @@ const planningScreen: React.FC<any> = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+    // root: {
+    //     paddingTop: 20,
+    //     paddingBottom: 15,
+    //     paddingHorizontal: 20,
+    // },
     root: {
-        paddingTop: 20,
-        paddingBottom: 15,
-        paddingHorizontal: 20,
+        flex: 1,
+        backgroundColor: "#ffffef"
+    },
+    topImage: {
+        height: HEIGHT * 0.2,
     },
     top: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
+        backgroundColor: "#fff",
+        elevation: 3
     },
     select: {
         backgroundColor: "#fff",
         borderRadius: 50,
     },
     input: {
-        marginBottom: 20,
+        backgroundColor: "#f3dec1",
+        borderRadius: 10,
+        padding: 20,
+        marginVertical: 10,
     },
     button: {
         width: "100%",
