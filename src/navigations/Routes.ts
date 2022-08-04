@@ -30,6 +30,8 @@ enum ROUTES {
     Filter = "Filter",
     Planning = "Planning",
     PlanList = "PlanList",
+    PlanDetail = "PlanDetail",
+    PlanLocationList = "PlanLocationList"
 }
 
 export default ROUTES;
