@@ -37,7 +37,7 @@ const Navigator: React.FC<any> = () => {
 
     return (
         <NavigationContainer>
-            {!user.token && !user._id  ? ( //&& to || 
+            {!user?.token && !user?._id  ? ( //&& to || 
                 <AuthStack />
             ) : (
                 <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: "#895DB0" }}>

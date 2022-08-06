@@ -5,10 +5,10 @@ import api from "./api";
 
 export class AuthService {
     public async signup(data:SignupModel): Promise<AxiosResponse<any, any>> {
-        return api().post("users/signup", data);
+        return api().post("auth/signup", data);
     }
 
     public async signin(data:SigninModel): Promise<AxiosResponse<any, any>> {
-        return api().post("users/signin", data);
+        return api().post("auth/signin", data);
     }
 }

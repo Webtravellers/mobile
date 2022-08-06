@@ -31,7 +31,8 @@ enum ROUTES {
     Planning = "Planning",
     PlanList = "PlanList",
     PlanDetail = "PlanDetail",
-    PlanLocationList = "PlanLocationList"
+    PlanLocationList = "PlanLocationList",
+    InterestedTopics = "InterestedTopics",
 }
 
 export default ROUTES;

@@ -13,6 +13,7 @@ import { RootState } from '../store'
 import { useSelector } from 'react-redux'
 import { FETCH_REQUESTS } from '../store/api'
 import { useIsFocused } from '@react-navigation/native';
+import WebView from 'react-native-webview'
 
 const HEIGHT = Dimensions.get('window').height
 
@@ -72,6 +73,10 @@ const PlanDetailScreen = ({ route, navigation }) => {
                 </ImageBackground>
               </TouchableOpacity>
             ))}
+          </View>
+          <View>
+            <Text>Harita</Text>
+            <WebView style={{width: 300, height: 300}} source={{uri: "http://192.168.43.168:3000/map/view?z=12&c=39.123452,38.123812"}}/>
           </View>
         </View>
       </ScrollView>

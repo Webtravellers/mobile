@@ -37,7 +37,7 @@ const SigninScreen: React.FC<any> = ( {navigation}) => {
         
         }).catch(err => {
             ErrorAlert({
-                text: err.response?.data?.message ?? "Error occured",
+                text: err.response?.data?.message ?? "Sunucu ile bağlantı sağlanamadı, lütfen daha sonra tekrar deneyiniz.",
             })
         })
     }

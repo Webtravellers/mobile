@@ -2,14 +2,16 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Text } from '@ui-kitten/components'
+import useAuth from '../hooks/useAuth'
 
 const TopBar = () => {
+    const auth = useAuth()
     return (
         <View style={styles.root}>
             <TouchableOpacity>
                 <Text style={styles.text}>Bi'Hatira</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={auth.logout}>
                 <Icon name='ios-notifications-outline' size={24} />
             </TouchableOpacity>
         </View>
