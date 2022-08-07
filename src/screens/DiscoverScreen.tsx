@@ -1,7 +1,7 @@
 import { Text as KittenText } from '@ui-kitten/components'
 import { Block, Card, Text } from 'galio-framework'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Dimensions, Image, ImageBackground, ScrollView, StyleSheet, TextInput, TouchableOpacity, View, Text as RNText } from 'react-native'
+import { ActivityIndicator, Dimensions, Image, ImageBackground, ScrollView, StyleSheet, TextInput, TouchableOpacity, View, Text as RNText, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useDispatch, useSelector } from 'react-redux'
 import LocationCard from '../components/LocationCard'
@@ -16,38 +16,77 @@ import { GlobalStyles } from '../themes/global'
 const { width, height } = Dimensions.get("screen")
 
 const DiscoverScreen: React.FC<any> = ({ navigation }) => {
-
-    // const [locations, setLocations] = useState<Location[]>([])
+    const [locations, setLocations] = useState<Location[] | null>(null)
+    const [totalPageSize, setTotalPageSize] = useState<number>(Infinity)
+    const [page, setPage] = useState(1)
     const [groupLocations, setGroupLocations] = useState<Record<string, Location[]>>({})
-    const { locations } = useSelector((state: RootState) => state.locations)
+    const [loading, setLoading] = useState(false)
+    // const { locations } = useSelector((state: RootState) => state.locations)
     const dispatch = useDispatch()
     useEffect(() => {
-        if (locations.length == 0) {
-            new LocationService().getAll().then(res => {
+        if (locations === null) {
+            new LocationService().getAll({size: 10}).then(res => {
                 console.log(res.data.data)
                 const locations = res.data.data as Location[]
-                dispatch(setLocations(locations))
-            })
-        }
-        else {
-            const _gLocations: Record<string, Location[]> = {};
-            locations.forEach(location => {
-                location.type.forEach(type => {
-                    const is = _gLocations[type.name]
-                    if (is) {
-                        _gLocations[type.name].push(location)
-                    } else {
-                        _gLocations[type.name] = [location]
-                    }
-                })
-            })
-            setGroupLocations(_gLocations)
-        }
-    }, [locations]);
+                setLocations(locations)
+                setTotalPageSize(res.data.totalPageSize)
 
-    if (locations.length == 0) {
+                const _gLocations: Record<string, Location[]> = {};
+                locations.forEach(location => {
+                    location.type.forEach(type => {
+                        const is = _gLocations[type.name]
+                        if (is) {
+                            _gLocations[type.name].push(location)
+                        } else {
+                            _gLocations[type.name] = [location]
+                        }
+                    })
+                })
+                setGroupLocations(_gLocations)
+            })
+        }
+    }, []);
+
+    const getMoreLocations = () => {
+        if(page >= Math.ceil(totalPageSize/10)) return;
+        setLoading(true)
+        new LocationService().getAll({ page: page + 1, size: 10 }).then(res => {
+            if(locations != null) {
+                const s = res.data.data as Location[]
+                setLocations([...locations, ...s])
+                setPage(page + 1)
+            }
+            setLoading(false)
+        }
+        )
+    }
+
+    if (locations === null) {
         return <ActivityIndicator size="large" style={styles.loader} />;
     }
+
+    const RenderLocationItem = ({ loc }) => (
+        <TouchableOpacity key={loc._id} style={{ marginVertical: 20 }}>
+            <ImageBackground borderRadius={10} source={{ uri: loc.photos[0] }} style={styles.topImage}>
+                <LinearGradient colors={['#ffffff00', '#000000ff']} start={{ x: 0, y: 0.7 }} end={{ x: 0, y: 1 }} style={{ flex: 1, borderRadius: 10 }}>
+                    <View style={styles.cardFooter}>
+                        <RNText style={{ fontFamily: "AlongSansExtraBold", color: "#fff", fontSize: 20 }}>{loc.name}</RNText>
+                        <RNText style={GlobalStyles.textMuted}>{loc.city.cityName}</RNText>
+                    </View>
+                </LinearGradient>
+            </ImageBackground>
+        </TouchableOpacity>
+    )
+    const indicator = () => {
+        return loading ? (
+          <View
+            style={{
+              padding: 20,
+            }}>
+            <ActivityIndicator animating size="large" />
+          </View>
+        ) : null
+      };
 
     return (
         <View style={{ flex: 1 }}>
@@ -94,18 +133,13 @@ const DiscoverScreen: React.FC<any> = ({ navigation }) => {
                     ))}
                     <View style={{ marginTop: 50 }}>
                         <KittenText style={{ ...GlobalStyles.textHeader, fontFamily: "AlongSansExtraBold" }}>Senin İçin 🎉</KittenText>
-                        {[1, 2, 3].map(() => (
-                            <TouchableOpacity style={{ marginVertical: 20 }}>
-                                <ImageBackground borderRadius={10} source={require("../assets/static/onboarding1.jpg")} style={styles.topImage}>
-                                    <LinearGradient colors={['#ffffff00', '#000000ff']} start={{ x: 0, y: 0.7 }} end={{ x: 0, y: 1 }} style={{ flex: 1, borderRadius: 10 }}>
-                                        <View style={styles.cardFooter}>
-                                            <RNText style={{fontFamily: "AlongSansExtraBold", color: "#fff", fontSize: 20}}>İstanbul Boğazı</RNText>
-                                            <RNText style={GlobalStyles.textMuted}>Ankara</RNText>
-                                        </View>
-                                    </LinearGradient>
-                                </ImageBackground>
-                            </TouchableOpacity>
-                        ))}
+                        <FlatList
+                            data={locations}
+                            renderItem={({ item }) => <RenderLocationItem loc={item} />}
+                            keyExtractor={item => item._id}
+                            onEndReached={getMoreLocations}
+                            ListFooterComponent = {indicator}
+                        />
                     </View>
                 </View>
             </ScrollView>
