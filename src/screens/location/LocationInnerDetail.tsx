@@ -13,16 +13,6 @@ import { SuccessAlert } from '../../components/Alert';
 import { calculateRate } from '../../utils/Util';
 import { Comment } from '../../types/CommentModel';
 
-const images = [
-    "https://nilatrip.com/wp-content/uploads/2021/07/nature-turkey-nila.jpg",
-    "https://nilatrip.com/wp-content/uploads/2021/07/nature-turkey-nila.jpg",
-    "https://nilatrip.com/wp-content/uploads/2021/07/nature-turkey-nila.jpg",
-    "https://nilatrip.com/wp-content/uploads/2021/07/nature-turkey-nila.jpg",
-    "https://nilatrip.com/wp-content/uploads/2021/07/nature-turkey-nila.jpg",
-    //     require("../../assets/static/discover-0.jpg"),
-    //     require("../../assets/static/auth.png"),
-    //     require("../../assets/static/loginscreen.png")
-]
 const locationService = new LocationService()
 
 const LocationInnerDetail = ({ route, navigation }) => {
