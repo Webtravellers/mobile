@@ -7,6 +7,11 @@ import CommentListItem from '../../components/CommentListItem';
 import BiInput from '../../components/BiInput';
 import { RateBar } from '../../components/RateBar';
 import { LocationService } from '../../services/locationService';
+import { NewCommentModel } from '../../types/NewCommentModel';
+import useAuth from '../../hooks/useAuth';
+import { SuccessAlert } from '../../components/Alert';
+import { calculateRate } from '../../utils/Util';
+import { Comment } from '../../types/CommentModel';
 
 const images = [
     "https://nilatrip.com/wp-content/uploads/2021/07/nature-turkey-nila.jpg",
@@ -21,16 +26,36 @@ const images = [
 const locationService = new LocationService()
 
 const LocationInnerDetail = ({ route, navigation }) => {
+    const auth = useAuth()
     const { location } = route.params
     const [rate, setRate] = useState(0);
     const [comment, setComment] = useState('');
-    const [comments, setComments] = useState<[] | null>(null)
+    const [comments, setComments] = useState<Comment[] | null>(null)
+    const [addCommentLoading, setAddCommentLoading] = useState(false)
 
     useEffect(() => {
+        if(addCommentLoading) return;
+
         locationService.getComments(location._id).then(res => {
-            setComments(res.data.data)
+            setComments(res.data.data?.reverse())
         })
-    }, [])
+    }, [addCommentLoading])
+
+    const handleNewCommentClick = () => {
+        setAddCommentLoading(true)
+        const data:NewCommentModel = {
+            comment: comment,
+            score: rate,
+            location: location._id,
+            user: auth.user?._id ?? ""
+        }
+        locationService.newComment(location?._id, data).then(res => {
+        setAddCommentLoading(false)
+        SuccessAlert({text: "Comment added successfully"})
+        setComment("")
+        setRate(0)
+        })
+    }
     return (
         <View style={{ flex: 1 }}>
             <View style={styles.topbar}>
@@ -61,7 +86,7 @@ const LocationInnerDetail = ({ route, navigation }) => {
                                 <Text style={{ fontSize: 16, fontWeight: "bold" }}>Konum: <Text style={{ color: "#58bfd6" }}>{location?.city?.cityName}</Text></Text>
                                 <Text style={{ fontSize: 16, fontWeight: "bold" }}>Tür: <Text style={{ color: "#d66758" }}>{location?.type?.map(x => x.name).join(", ")}</Text></Text>
                             </View>
-                            <Text style={{ fontSize: 16, fontWeight: "bold" }}>Puan: <Text style={{ color: "orange" }}>{location?.comments.map(x => x.score).reduce((acc, val) => acc + val, 0)}</Text></Text>
+                            <Text style={{ fontSize: 16, fontWeight: "bold" }}>Puan: <Text style={{ color: "orange" }}>{calculateRate(comments?.map(x => x.score))}</Text></Text>
                         </View>
                         <Text style={styles.desc}>{location?.desc}</Text>
                     </View>
@@ -72,15 +97,17 @@ const LocationInnerDetail = ({ route, navigation }) => {
                                 <Text>Puanla</Text>
                                 <RateBar value={rate} onValueChange={setRate} />
                             </View>
-                            <BiInput placeholder='Yorum Yap' bgColor='white' style={{padding: 10, backgroundColor: "white"}} />
+                            <BiInput value={comment} placeholder='Yorum Yap' bgColor='white' style={{padding: 10, backgroundColor: "white"}} onChangeText={setComment} />
                             <View style={{flexDirection: "row", justifyContent: "flex-end"}}>
-                                <Button appearance={"ghost"}>Paylaş</Button>
+                                <Button appearance={"ghost"} onPress={handleNewCommentClick}>
+                                    {addCommentLoading ? <ActivityIndicator size="small" color="#000" /> : <Text>Yorum Yap</Text>}
+                                </Button>
                             </View>
                         </View>
                         { comments == null ? <ActivityIndicator /> : comments?.length > 0 ? (
                             <FlatList data={comments} renderItem={({item}) => <CommentListItem comment={item}/>} />
                         ): (
-                            <Text>Hiç yorum yok, ilk yorum yapan sen ol ✔</Text>
+                            <Text style={{marginBottom: 40}}>Hiç yorum yok, ilk yorum yapan sen ol ✔</Text>
                         )}
                     </View>
                 </View>

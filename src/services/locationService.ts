@@ -21,4 +21,8 @@ export class LocationService {
     public async getComments(id:number): Promise<AxiosResponse<any, any>> {
         return api().get(endpoint + id + "/comments/");
     }
+    
+    public async newComment(id:number, data): Promise<AxiosResponse<any, any>> {
+        return api().post(endpoint + id + "/comments/", data);
+    }
 }
