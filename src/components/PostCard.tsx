@@ -1,12 +1,44 @@
-import { Text } from 'galio-framework';
-import React from 'react'
-import { Dimensions, Image, StyleSheet, Touchable, TouchableOpacity, View } from 'react-native'
-import Icon from 'react-native-vector-icons/Entypo';
-import AIcon from 'react-native-vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
 import { Button } from '@ui-kitten/components';
+import { Text } from 'galio-framework';
+import React, { useState } from 'react';
+import { Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import AIcon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/Entypo';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import ROUTES from '../navigations/Routes';
+import { PostService } from '../services/postService';
+import { UserService } from '../services/userService';
+import { RootState } from '../store';
+import { fetchPostByUserId } from '../store/user';
 
 const { width, height } = Dimensions.get("screen")
-const PostCard = ({post}) => {
+const postService = new PostService()
+const userService = new UserService()
+const PostCard = (props) => {
+    const [post, setPost] = useState(props.post)
+    const { user } = useSelector((state: RootState) => state.user)
+    const navigation = useNavigation()
+    const dispatch = useDispatch()
+
+    const LikeButton = () => (
+        post.likes.includes(user?._id) ? (
+            <AIcon name='like1' color={"green"} size={20} />
+        ) : (
+            <AIcon name='like2' size={20} />
+        )
+    )
+
+    const handleLikeClick = () => {
+        if (!user) return;
+
+        postService.handleLikeEvent(user?._id, post._id).then(res => {
+            setPost(res.data.data)
+            dispatch(fetchPostByUserId(user?._id))
+        })
+    }
+
     return (
         <View style={styles.root}>
             <View style={styles.cardHeader}>
@@ -27,7 +59,8 @@ const PostCard = ({post}) => {
                 <Button
                     status={"basic"}
                     appearance={"ghost"}
-                    accessoryLeft={(props) => <AIcon name='like2' size={20} />}
+                    accessoryLeft={LikeButton}
+                    onPress={handleLikeClick}
                 >
                     {post.likes.length ?? "0"}
                 </Button>
@@ -35,6 +68,7 @@ const PostCard = ({post}) => {
                     status={"basic"}
                     appearance={"ghost"}
                     accessoryLeft={(props) => <AIcon name='message1' size={20} />}
+                    onPress={() => navigation.navigate(ROUTES.PostCommentList, { post })}
                 >
                     {post.comments?.length ?? 0}
                 </Button>

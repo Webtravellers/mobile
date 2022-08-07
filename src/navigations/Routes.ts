@@ -23,6 +23,7 @@ enum ROUTES {
     PostDetail = 'PostDetail',
     PostEdit = 'PostEdit',
     PostCreate = 'PostCreate',
+    PostCommentList = "PostCommentList",
     Signin = 'Signin',
     Signup = 'Signup',
     ForgotPassword = 'ForgotPassword',

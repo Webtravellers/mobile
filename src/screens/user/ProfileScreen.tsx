@@ -8,19 +8,22 @@ import { PostModel } from '../../types/PostModel';
 import { PostService } from '../../services/postService';
 import RenderProfilePostItem from '../../components/RenderProfilePostItem';
 import ROUTES from '../../navigations/Routes';
+import { useDispatch } from 'react-redux';
+import { fetchPostByUserId } from '../../store/user';
 
 const { height, width } = Dimensions.get("screen");
 const wallpaper = { uri: "https://wallpaperaccess.com/full/2135329.jpg" }
 
 const postService = new PostService()
 const ProfileScreen = ({navigation}) => {
-    const { user } = useSelector((state: RootState) => state.user)
-    const [post, setPost] = useState<PostModel[] | null>(null)
+    const { user, posts } = useSelector((state: RootState) => state.user)
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        postService.getPostsByUserId(user?._id ?? "").then(res => {
-            setPost(res.data.data)
-        })
+        dispatch(fetchPostByUserId(user?._id))
+        // postService.getPostsByUserId(user?._id ?? "").then(res => {
+        //     setPost(res.data.data)
+        // })
     }, [])
 
     return (
@@ -68,11 +71,11 @@ const ProfileScreen = ({navigation}) => {
                 </View>
                 <View style={styles.userPost}>
                     <Text style={[GlobalStyles.textHeader, { fontSize: 20 }]}>Gönderiler 📌</Text>
-                    {post == null ? <ActivityIndicator size="large" color="#0000ff" /> : (
+                    {posts == null ? <ActivityIndicator size="large" color="#0000ff" /> : (
                         <List
-                            data={post}
+                            data={posts}
                             numColumns={3}
-                            renderItem={({item, index}) => <RenderProfilePostItem item={item} onPress={() => navigation.navigate(ROUTES.UserPostList, {posts: post, index})}/>}
+                            renderItem={({item, index}) => <RenderProfilePostItem item={item} onPress={() => navigation.navigate(ROUTES.UserPostList, {posts: posts, index})}/>}
                         />
                     )}
                 </View>
