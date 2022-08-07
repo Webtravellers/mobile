@@ -1,18 +1,20 @@
 import { Block, Text } from 'galio-framework'
 import React from 'react'
 import { Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Text as KitText } from '@ui-kitten/components'
+import Icon from 'react-native-vector-icons/AntDesign'
 
 const { width, height } = Dimensions.get("screen")
 
 function makeid(length: number) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * 
- charactersLength));
-   }
-   return result;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() *
+            charactersLength));
+    }
+    return result;
 }
 
 const photos = [
@@ -35,19 +37,26 @@ const names = [
     "Jamie R. Peeler",
 ]
 
-const CommentListItem = () => {
+const CommentListItem = ({comment}) => {
+    console.log(comment )
     return (
         <TouchableOpacity activeOpacity={0.5}>
             <View style={styles.body}>
-                <Image source={{ uri: photos[Math.floor(Math.random() * photos.length)] }} style={styles.pp} borderRadius={100} />
+                <Image source={{ uri: comment?.user?.photo }} style={styles.pp} borderRadius={100} />
                 <View style={styles.data}>
-                    <View style={styles.title}>
-                        <Text bold>{names[Math.floor(Math.random() * names.length)]}</Text>
-                        <Text size={10} muted>{Math.floor(Math.random() * 60 + 1)} dakika önce</Text>
+                    <View>
+                        <Text bold>{[comment?.user?.name, comment?.user?.lastname].join(" ")}</Text>
+                        <View style={styles.title}>
+                            <Text>
+                                <Icon name="star" size={12} color="#F58D27" style={{marginRight: 8}} />
+                                {comment.score}
+                            </Text>
+                            <Text size={10} muted>{comment.date.toLocaleDate()}</Text>
+                        </View>
                     </View>
                     <View>
                         <Text>
-                            {makeid(Math.floor(Math.random()*100 + 50))}
+                            {comment.comment}
                         </Text>
                     </View>
                 </View>
@@ -60,16 +69,16 @@ const CommentListItem = () => {
 const styles = StyleSheet.create({
     body: {
         flexDirection: "row",
-        marginVertical: 20,
-        maxWidth: width * 0.9,
-        overflow: "visible"
+        overflow: "visible",
+        flex: 1,
     },
     pp: {
         width: 50,
         height: 50,
     },
     data: {
-        marginLeft: 10,
+        paddingLeft: 10,
+        flex: 1,
     },
     title: {
         flexDirection: "row",
@@ -79,7 +88,7 @@ const styles = StyleSheet.create({
     hr: {
         borderBottomColor: "#bdbdbd",
         borderBottomWidth: 1,
-        marginTop: 10,
+        marginVertical: 20,
     }
 })
 

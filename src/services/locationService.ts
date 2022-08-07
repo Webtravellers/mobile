@@ -17,4 +17,8 @@ export class LocationService {
     public async filter(data:LocationFilter): Promise<AxiosResponse<any, any>> {
         return api().post(endpoint + "filter/", data);
     }
+
+    public async getComments(id:number): Promise<AxiosResponse<any, any>> {
+        return api().get(endpoint + id + "/comments/");
+    }
 }

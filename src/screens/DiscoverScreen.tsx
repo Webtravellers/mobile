@@ -23,6 +23,7 @@ const DiscoverScreen: React.FC<any> = ({ navigation }) => {
     const [loading, setLoading] = useState(false)
     // const { locations } = useSelector((state: RootState) => state.locations)
     const dispatch = useDispatch()
+    console.log(locations)
     useEffect(() => {
         if (locations === null) {
             new LocationService().getAll({size: 10}).then(res => {

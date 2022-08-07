@@ -21,16 +21,6 @@ const LocationCommentListScreen:React.FC<any> = ({route, navigation}) => {
             </View>
             <ScrollView style={styles.list}>
                 <View style={styles.comments}>
-                    <CommentListItem />
-                    <CommentListItem />
-                    <CommentListItem />
-                    <CommentListItem />
-                    <CommentListItem />
-                    <CommentListItem />
-                    <CommentListItem />
-                    <CommentListItem />
-                    <CommentListItem />
-                    <CommentListItem />
                 </View>
             </ScrollView>
         </SafeAreaView>

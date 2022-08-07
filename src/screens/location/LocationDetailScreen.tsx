@@ -24,12 +24,12 @@ const LocationDetailScreen: React.FC<any> = ({ route, navigation }) => {
                     <TouchableOpacity activeOpacity={0.5} style={styles.btn} onPress={() => navigation.goBack()}>
                         <Icon name="arrowleft" size={30} color="white" />
                     </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.5} style={styles.btn} onPress={() => navigation.navigate(ROUTES.LocationInnerDetail)}>
+                    <TouchableOpacity activeOpacity={0.5} style={styles.btn} onPress={() => navigation.navigate(ROUTES.LocationInnerDetail, {location: location})}>
                         <Icon name="info" size={30} color="white" />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.bottomBar}>
-                    <Text style={[GlobalStyles.textTitle]}>Mogan Gölü</Text>
+                    <Text style={[GlobalStyles.textTitle]}>{location?.name}</Text>
                     <View style={{ flexDirection: "row", alignItems: "center", marginVertical: 5 }}>
                         <IoIcon name="ios-location-sharp" size={15} color="#ddd" />
                         <Text style={[GlobalStyles.textMuted]}>Ankara</Text>
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     btn: {
         backgroundColor: "#F9B15B",
         padding: 10,
-        elevation: 2,
+        elevation: 5,
         borderRadius: 10,
     },
     review: {

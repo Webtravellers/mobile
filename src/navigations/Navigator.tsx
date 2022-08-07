@@ -50,7 +50,7 @@ const Navigator: React.FC<any> = () => {
                             ),
                         }}
                     />
-                    <Tab.Screen
+                    {/* <Tab.Screen
                         name="Ara"
                         component={FilterStack}
                         options={{
@@ -58,7 +58,7 @@ const Navigator: React.FC<any> = () => {
                                 <Icon name="search1" {...props} />
                             ),
                         }}
-                    />
+                    /> */}
                     <Tab.Screen
                         name="Hatıralar"
                         component={NetworkStack}
