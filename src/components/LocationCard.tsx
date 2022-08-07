@@ -27,11 +27,11 @@ const LocationCard:React.FC<LocationCardProps> = ({card, navigation, css}) => {
                   {" "}{card?.rate ?? 5.0}
                 </Text> */}
             </Block>
-            <Block>
+            {/* <Block>
               <Text style={styles.star}>
                 <Icon size={15} name='hearto' />
               </Text>
-            </Block>
+            </Block> */}
           </View>
         </ImageBackground>
         

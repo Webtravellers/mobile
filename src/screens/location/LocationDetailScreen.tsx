@@ -1,19 +1,24 @@
-import { Button, Text } from '@ui-kitten/components';
-import React from 'react';
-import { Dimensions, ImageBackground, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Text } from '@ui-kitten/components';
+import React, { useEffect } from 'react';
+import { Dimensions, ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import IoIcon from 'react-native-vector-icons/Ionicons';
-import MIcon from 'react-native-vector-icons/MaterialIcons';
+import { useSelector } from 'react-redux';
+import FavoriteButton from '../../components/FavoriteButton';
 import ROUTES from '../../navigations/Routes';
+import { UserService } from '../../services/userService';
+import { RootState } from '../../store';
 import { GlobalStyles } from '../../themes/global';
-import IonIcon from 'react-native-vector-icons/Ionicons'
 import { calculateRate } from '../../utils/Util';
-
+import { useIsFocused } from '@react-navigation/native';
 const { width, height } = Dimensions.get("screen")
-
 const LocationDetailScreen: React.FC<any> = ({ route, navigation }) => {
     const location = route.params
+    const focused = useIsFocused()
 
+    useEffect(() => {}, [focused])
+
+    console.log("da sd asldö asld ö")
     return (
         <View style={styles.root}>
             <ImageBackground
@@ -50,10 +55,7 @@ const LocationDetailScreen: React.FC<any> = ({ route, navigation }) => {
                             <Icon name="home" size={20} color="white" />
                             <Text style={{ color: "#fff", marginLeft: 10 }}>Haritada Gör</Text>
                         </TouchableOpacity>
-
-                        <TouchableOpacity activeOpacity={0.5} style={[styles.btn, {}]}>
-                            <IonIcon name="heart-outline" size={30} color="#ff0c33" />
-                        </TouchableOpacity>
+                        <FavoriteButton location={location}/>
                     </View>
                 </View>
             </ImageBackground>

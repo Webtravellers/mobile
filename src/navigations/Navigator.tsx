@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import SignupScreen from "../screens/auth/SignupScreen";
 import DiscoverScreen from "../screens/DiscoverScreen";
 import StorageService, { StorageKeys } from "../services/StorageService";
+import { UserService } from "../services/userService";
 import { RootState } from "../store";
 import { setUser } from "../store/user";
 import { UserModel } from "../types/userModel";
@@ -21,6 +22,7 @@ import ProfileStack from "./profileStack";
 import ROUTES from "./Routes";
 
 const Tab = createBottomTabNavigator()
+const userService = new UserService()
 
 const Navigator: React.FC<any> = () => {
     const { user } = useSelector((state: RootState) => state.user);
@@ -30,7 +32,9 @@ const Navigator: React.FC<any> = () => {
         StorageService.get(StorageKeys.USER).then(res => {
             if (res) {
                 const user: UserModel = JSON.parse(res)
-                dispatch(setUser(user))
+                userService.getUser(user._id).then(res => {
+                    dispatch(setUser(res.data.data))
+                })
             }
         })
     }, [])

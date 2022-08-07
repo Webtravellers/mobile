@@ -12,6 +12,7 @@ import useAuth from '../../hooks/useAuth';
 import { SuccessAlert } from '../../components/Alert';
 import { calculateRate } from '../../utils/Util';
 import { Comment } from '../../types/CommentModel';
+import FavoriteButton from '../../components/FavoriteButton';
 
 const locationService = new LocationService()
 
@@ -55,11 +56,12 @@ const LocationInnerDetail = ({ route, navigation }) => {
                     </View>
                 </TouchableOpacity>
                 <View>
-                    <TouchableOpacity>
+                    <FavoriteButton location={location} style={{backgroundColor: "transparent", elevation: 0}}/>
+                    {/* <TouchableOpacity>
                         <View style={styles.topBtn}>
                             <Icon name="heart-outline" size={30} color="#000" />
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </View>
             <ScrollView>

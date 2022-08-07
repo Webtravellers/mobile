@@ -1,3 +1,5 @@
+import Location from "./LocationModel";
+
 export interface UserModel {
     _id: string;
     email: string;
@@ -8,4 +10,5 @@ export interface UserModel {
     bio: string,
     photo: string,
     wallpaper: string,
+    favoritesList?: Location[]
 }
