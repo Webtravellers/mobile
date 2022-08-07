@@ -21,7 +21,6 @@ const PlanListScreen = ({ navigation }) => {
     tripService.getTripsByUserId(user._id).then(res => {
       setPlans(res.data.data ?? [])
     }).catch(err => {
-      console.log(err)
     })
   }, [])
 

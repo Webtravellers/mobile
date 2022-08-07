@@ -51,7 +51,6 @@ const PlanAddLocationScreen = ({ route, navigation }) => {
     }, [])
 
     useEffect(() => {
-        console.log(selectedCity.row, selectedType.row)
         let _locations = locations
         if(showOnlyExists) {
             _locations = _locations.filter(l => trip.locations.some(x => x._id == l._id))
@@ -71,7 +70,6 @@ const PlanAddLocationScreen = ({ route, navigation }) => {
     const handleAddLocation = (location) => {
         setIsLoading([...isLoading, location._id])
         tripService.addLocationToTrip(trip.userId, trip._id, { location: location._id }).then(res => {
-            console.log(res.data)
             tripService.getTripById(trip.userId, trip._id).then(res => {
                 setTrip(res.data.data)
                 setIsLoading(s => s.filter(x => x != location._id))

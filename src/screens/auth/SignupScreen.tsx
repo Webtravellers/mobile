@@ -19,10 +19,8 @@ const SignupScreen: React.FC<any> = ({ navigation }) => {
         password: "",
     }
     const handleSignupClick = (values:SignupModel) => {
-        console.log(values)
         const authService = new AuthService()
         authService.signup(values).then(res => {
-            console.log(res.data.message)
             SuccessAlert({
                 text: res.data.message,
                 onPress: () => {

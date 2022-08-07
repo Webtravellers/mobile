@@ -38,7 +38,6 @@ const names = [
 ]
 
 const CommentListItem = ({comment}) => {
-    console.log(comment )
     return (
         <TouchableOpacity activeOpacity={0.5}>
             <View style={styles.body}>

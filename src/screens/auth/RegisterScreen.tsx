@@ -18,7 +18,6 @@ const RegisterScreen = ({ navigation }) => {
     const handleSignupClick = () => {
         const authService = new AuthService()
         authService.signup(values).then(res => {
-            console.log(res.data.message)
             SuccessAlert({
                 text: res.data.message,
                 onPress: () => {

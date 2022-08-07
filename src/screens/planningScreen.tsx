@@ -29,14 +29,12 @@ const planningScreen: React.FC<any> = ({ navigation }) => {
         }
         const tripService = new TripService()
         tripService.newTrip(user._id, data).then(res => {
-            console.log(res)
             Alert.alert("Başarılı 🎉", "Gezi planı başarılı bir şekilde oluşturuldu")
             setName('')
             setStartDate(null)
             setEndDate(null)
         }).catch(err => {
             Alert.alert("Başarısız 😢", "Gezi planı oluşturma işlemi başarısız oldu. Lütfen değerleri kontrol ediniz.")
-            console.log({...err})
         })
     }
 

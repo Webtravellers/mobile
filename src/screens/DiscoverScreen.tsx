@@ -23,11 +23,9 @@ const DiscoverScreen: React.FC<any> = ({ navigation }) => {
     const [loading, setLoading] = useState(false)
     // const { locations } = useSelector((state: RootState) => state.locations)
     const dispatch = useDispatch()
-    console.log(locations)
     useEffect(() => {
         if (locations === null) {
             new LocationService().getAll({size: 10}).then(res => {
-                console.log(res.data.data)
                 const locations = res.data.data as Location[]
                 setLocations(locations)
                 setTotalPageSize(res.data.totalPageSize)

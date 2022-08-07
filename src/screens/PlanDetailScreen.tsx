@@ -24,7 +24,6 @@ const PlanDetailScreen = ({ route, navigation }) => {
   const { fetch } = useSelector((state: RootState) => state.api);
   
   useEffect(() => {
-    console.log("asd asd sad as das")
     if(fetch.includes(FETCH_REQUESTS.TRIP_DETAIL)) {
       let tripService = new TripService()
       tripService.getTripById(item.userId, item._id).then(res => {
