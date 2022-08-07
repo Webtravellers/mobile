@@ -3,67 +3,75 @@ import React from 'react'
 import { Dimensions, Image, StyleSheet, Touchable, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Entypo';
 import AIcon from 'react-native-vector-icons/AntDesign';
-const {width, height} = Dimensions.get("screen")
-const PostCard = () => {
-  return (
-    <View style={styles.root}>
-        <View style={styles.cardHeader}>
-            <View style={{flexDirection: "row", alignItems: "center"}}>
-                <Image source={{uri: "https://randomuser.me/api/portraits/women/10.jpg"}} style={styles.userPhoto}/>
-                <View>
-                    <Text bold>Yasin Torun</Text>
-                    <Text muted>@yasintorun</Text>
+import { Button } from '@ui-kitten/components';
+
+const { width, height } = Dimensions.get("screen")
+const PostCard = ({post}) => {
+    return (
+        <View style={styles.root}>
+            <View style={styles.cardHeader}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image source={{ uri: post.postedBy.photo }} style={styles.userPhoto} />
+                    <View>
+                        <Text bold>{post.postedBy?.name + " " + post.postedBy?.lastname}</Text>
+                        <Text muted>@{post.postedBy?.username}</Text>
+                    </View>
                 </View>
+                <TouchableOpacity>
+                    <Icon name='dots-three-vertical' />
+                </TouchableOpacity>
             </View>
-            <TouchableOpacity>
-                <Icon name='dots-three-vertical' />
-            </TouchableOpacity>
+            <Text style={{ marginVertical: 10, color: "#222" }}>{post.caption}</Text>
+            <Image style={styles.postImage} borderRadius={20} source={{ uri: post.photo }} />
+            <View style={styles.bottom}>
+                <Button
+                    status={"basic"}
+                    appearance={"ghost"}
+                    accessoryLeft={(props) => <AIcon name='like2' size={20} />}
+                >
+                    {post.likes.length ?? "0"}
+                </Button>
+                <Button
+                    status={"basic"}
+                    appearance={"ghost"}
+                    accessoryLeft={(props) => <AIcon name='message1' size={20} />}
+                >
+                    {post.comments?.length ?? 0}
+                </Button>
+            </View>
         </View>
-        <Image style={styles.postImage} source={{uri:"https://images.unsplash.com/photo-1527631746610-bca00a040d60?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8OXx8fGVufDB8fHx8&w=1000&q=80"}}/>
-        <View style={styles.bottom}>
-            <TouchableOpacity style={styles.bottomInfo}>
-                <AIcon name="heart" color={"tomato"} size={20}/>
-                <Text muted style={{marginLeft: 5}}>128 kişi beğendi</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.bottomInfo}>
-                <Text muted>7 Yorum</Text>
-            </TouchableOpacity>
-        </View>
-    </View>
-  )
+    )
 }
 
 const styles = StyleSheet.create({
     root: {
-        borderRadius: 5,
+        borderRadius: 10,
         backgroundColor: "white",
         marginBottom: 20,
+        padding: 10,
+        elevation: 2
     },
     cardHeader: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: 10,
+        marginBottom: 10
     },
     userPhoto: {
         width: 48,
         height: 48,
-        borderRadius: 64, 
+        borderRadius: 64,
         marginRight: 10,
     },
     postImage: {
-        height: 300
+        height: 300,
     },
     bottom: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
-        padding: 10,
-        marginVertical: 10,
+        justifyContent: "flex-start",
     },
     bottomInfo: {
-        flexDirection: "row",
-        alignItems: "center",
     },
     actions: {
         flexDirection: "row",

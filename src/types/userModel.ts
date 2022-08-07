@@ -10,5 +10,7 @@ export interface UserModel {
     bio: string,
     photo: string,
     wallpaper: string,
-    favoritesList?: Location[]
+    favoritesList?: Location[],
+    name?: string,
+    lastname?: string,
 }

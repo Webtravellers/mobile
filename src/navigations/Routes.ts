@@ -19,6 +19,7 @@ enum ROUTES {
     Messages = 'Messages',
     Search = 'Search',
     Post = 'Post',
+    UserPostList = 'UserPostList',
     PostDetail = 'PostDetail',
     PostEdit = 'PostEdit',
     PostCreate = 'PostCreate',

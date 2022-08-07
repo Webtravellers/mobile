@@ -18,7 +18,6 @@ const LocationDetailScreen: React.FC<any> = ({ route, navigation }) => {
 
     useEffect(() => {}, [focused])
 
-    console.log("da sd asldö asld ö")
     return (
         <View style={styles.root}>
             <ImageBackground

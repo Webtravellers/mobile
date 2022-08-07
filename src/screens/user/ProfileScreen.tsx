@@ -1,64 +1,95 @@
-import { Block, Text } from 'galio-framework';
-import React from 'react';
-import { Dimensions, Image, ImageBackground, SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useSelector } from 'react-redux';
-import StorageService from '../../services/StorageService';
+import { ActivityIndicator, Dimensions, Image, ImageBackground, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StatusBar, StyleSheet, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Button, Layout, List, Text } from '@ui-kitten/components';
 import { RootState } from '../../store';
+import { useSelector } from 'react-redux';
+import { GlobalStyles } from '../../themes/global';
+import { PostModel } from '../../types/PostModel';
+import { PostService } from '../../services/postService';
+import RenderProfilePostItem from '../../components/RenderProfilePostItem';
+import ROUTES from '../../navigations/Routes';
 
 const { height, width } = Dimensions.get("screen");
-const ProfileScreen = () => {
-    const { user } = useSelector((state: RootState) => state.user);
+const wallpaper = { uri: "https://wallpaperaccess.com/full/2135329.jpg" }
+
+const postService = new PostService()
+const ProfileScreen = ({navigation}) => {
+    const { user } = useSelector((state: RootState) => state.user)
+    const [post, setPost] = useState<PostModel[] | null>(null)
+
+    useEffect(() => {
+        postService.getPostsByUserId(user?._id ?? "").then(res => {
+            setPost(res.data.data)
+        })
+    }, [])
 
     return (
-        <SafeAreaView>
-            <ImageBackground
-                source={{ uri: user.wallpaper }}
-                style={styles.userWallpaper}
-            >
-                <View style={styles.userImage}>
-                    <Image
-                        source={{ uri: user.photo }}
-                        borderRadius={100}
-                        style={{
-                            width: 120,
-                            height: 120,
-                            borderColor: "white",
-                            borderWidth: 3
-                        }}
-                    />
+        <View style={styles.body}>
+            <ScrollView>
+                <View>
+                    <ImageBackground
+                        source={{ uri: user?.wallpaper ?? "https://wallpaperaccess.com/full/2135329.jpg" }}
+                        style={styles.wallpaper}
+                    >
+                        <View style={styles.userImage}>
+                            <Image
+                                source={{ uri: user?.photo }}
+                                borderRadius={100}
+                                style={styles.profilePhoto}
+                            />
+                        </View>
+                    </ImageBackground>
                 </View>
-                {/* <TouchableOpacity style={{width: 50}}>
-                    <Icon name="setting" size={30} color="white" />
-                </TouchableOpacity> */}
-            </ImageBackground>
-            <Block center>
-                <Text h3 color='black'>{user.fullname}</Text>
-                <Block row style={styles.followStat}>
-                    <TouchableOpacity>
-                        <Block center>
-                            <Text h4>{user.followers.length}</Text>
-                            <Text muted>Takipçi</Text>
-                        </Block>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Block center>
-                            <Text h4>{user.following.length}</Text>
-                            <Text muted>Takip</Text>
-                        </Block>
-                    </TouchableOpacity>
-                </Block>
-                <Block width={200}>
-                    <Text muted>
-                        Biyografi 🎉🙌
+                <View style={styles.userInfo}>
+                    <Text style={styles.userName}>{user?.name + " " + user?.lastname}</Text>
+                    <View style={styles.follow}>
+                        <Button
+                            appearance={'ghost'}
+                            style={{ marginHorizontal: 10 }}>
+                            <View>
+                                <Text style={styles.followText}>{user?.followers.length ?? 0}</Text>
+                                <Text>Takipçi</Text>
+                            </View>
+                        </Button>
+                        <Button
+                            appearance={'ghost'}
+                            style={{ marginHorizontal: 10 }}>
+                            <View>
+                                <Text style={styles.followText}>{user?.following.length ?? 0}</Text>
+                                <Text>Takip</Text>
+                            </View>
+                        </Button>
+                    </View>
+                </View>
+                <View style={{ margin: 20, marginTop: 0 }}>
+                    <Text style={{ color: "#414b52" }}>
+                        {user?.bio}
                     </Text>
-                </Block>
-            </Block>
-        </SafeAreaView>
+                </View>
+                <View style={styles.userPost}>
+                    <Text style={[GlobalStyles.textHeader, { fontSize: 20 }]}>Gönderiler 📌</Text>
+                    {post == null ? <ActivityIndicator size="large" color="#0000ff" /> : (
+                        <List
+                            data={post}
+                            numColumns={3}
+                            renderItem={({item, index}) => <RenderProfilePostItem item={item} onPress={() => navigation.navigate(ROUTES.UserPostList, {posts: post, index})}/>}
+                        />
+                    )}
+                </View>
+            </ScrollView>
+        </View>
     )
 }
 
+export default ProfileScreen
+
 const styles = StyleSheet.create({
-    userWallpaper: {
+    body: {
+        // flex: 1,
+        height: "100%",
+        backgroundColor: '#fafaf2'
+    },
+    wallpaper: {
         width: width,
         height: height * 0.3,
         flexDirection: "row",
@@ -71,15 +102,40 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         transform: [{ translateY: 30 }],
     },
-    followStat: {
-        marginVertical: 10,
-        paddingBottom: 20,
-        justifyContent: "space-between",
-        borderBottomColor: "#ccc",
-        borderBottomWidth: 1,
-        width: 200,
-        paddingHorizontal: 20
+    profilePhoto: {
+        width: 120,
+        height: 120,
+        borderColor: "white",
+        borderWidth: 3
+    },
+    userInfo: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    userName: {
+        fontSize: 24,
+        fontWeight: 'bold',
+    },
+    follow: {
+        flexDirection: 'row',
+        marginVertical: 10
+    },
+    followText: {
+        textAlign: 'center',
+        fontSize: 18,
+        fontWeight: '700'
+    },
+    userPost: {
+        flex: 1,
+        marginHorizontal: 20,
+    },
+    imagePost: {
+        height: height * 0.3,
+        borderRadius: 10,
+        marginVertical: 5
+    },
+    posts: {
+        flexWrap: "wrap",
     }
 })
-
-export default ProfileScreen
