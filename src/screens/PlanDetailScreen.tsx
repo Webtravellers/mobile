@@ -75,7 +75,7 @@ const PlanDetailScreen = ({ route, navigation }) => {
           </View>
           <View>
             <Text>Harita</Text>
-            <WebView style={{width: 300, height: 300}} source={{uri: "http://192.168.43.168:3000/map/view?z=12&c=39.123452,38.123812"}}/>
+            {/* <WebView style={{width: 300, height: 300}} source={{uri: "http://192.168.43.168:3000/map/view?z=12&c=39.123452,38.123812"}}/> */}
           </View>
         </View>
       </ScrollView>

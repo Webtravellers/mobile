@@ -12,6 +12,8 @@ import { setLocations } from '../store/locations'
 import Location from '../types/LocationModel'
 import LinearGradient from "react-native-linear-gradient"
 import { GlobalStyles } from '../themes/global'
+import ROUTES from '../navigations/Routes'
+import LocationInfinityList from '../components/LocationInfinityList'
 
 const { width, height } = Dimensions.get("screen")
 
@@ -25,7 +27,7 @@ const DiscoverScreen: React.FC<any> = ({ navigation }) => {
     const dispatch = useDispatch()
     useEffect(() => {
         if (locations === null) {
-            new LocationService().getAll({size: 10}).then(res => {
+            new LocationService().getAll({ size: 10 }).then(res => {
                 const locations = res.data.data as Location[]
                 setLocations(locations)
                 setTotalPageSize(res.data.totalPageSize)
@@ -47,10 +49,10 @@ const DiscoverScreen: React.FC<any> = ({ navigation }) => {
     }, []);
 
     const getMoreLocations = () => {
-        if(page >= Math.ceil(totalPageSize/10)) return;
+        if (page >= Math.ceil(totalPageSize / 10)) return;
         setLoading(true)
         new LocationService().getAll({ page: page + 1, size: 10 }).then(res => {
-            if(locations != null) {
+            if (locations != null) {
                 const s = res.data.data as Location[]
                 setLocations([...locations, ...s])
                 setPage(page + 1)
@@ -64,13 +66,13 @@ const DiscoverScreen: React.FC<any> = ({ navigation }) => {
         return <ActivityIndicator size="large" style={styles.loader} />;
     }
 
-    const RenderLocationItem = ({ loc }) => (
-        <TouchableOpacity key={loc._id} style={{ marginVertical: 20 }}>
-            <ImageBackground borderRadius={10} source={{ uri: loc.photos[0] }} style={styles.topImage}>
+    const RenderLocationItem = ({ item }) => (
+        <TouchableOpacity key={item._id} style={{ margin: 10 }} onPress={() => navigation.navigate(ROUTES.LocationDetail, { ...item })}>
+            <ImageBackground borderRadius={10} source={{ uri: item.photos[0] }} style={styles.topImage}>
                 <LinearGradient colors={['#ffffff00', '#000000ff']} start={{ x: 0, y: 0.7 }} end={{ x: 0, y: 1 }} style={{ flex: 1, borderRadius: 10 }}>
                     <View style={styles.cardFooter}>
-                        <RNText style={{ fontFamily: "AlongSansExtraBold", color: "#fff", fontSize: 20 }}>{loc.name}</RNText>
-                        <RNText style={GlobalStyles.textMuted}>{loc.city.cityName}</RNText>
+                        <RNText style={{ fontFamily: "AlongSansExtraBold", color: "#fff", fontSize: 20 }}>{item.name}</RNText>
+                        <RNText style={GlobalStyles.textMuted}>{item.city.cityName}</RNText>
                     </View>
                 </LinearGradient>
             </ImageBackground>
@@ -78,70 +80,53 @@ const DiscoverScreen: React.FC<any> = ({ navigation }) => {
     )
     const indicator = () => {
         return loading ? (
-          <View
-            style={{
-              padding: 20,
-            }}>
-            <ActivityIndicator animating size="large" />
-          </View>
+            <View
+                style={{
+                    padding: 20,
+                }}>
+                <ActivityIndicator animating size="large" />
+            </View>
         ) : null
-      };
+    };
 
     return (
         <View style={{ flex: 1 }}>
-            {/* <StatusBar  /> */}
             <TopBar />
-            <ScrollView style={{ backgroundColor: "#FFFFFE" }}>
-                {/* <ImageBackground source={require("../assets/static/discover-0.jpg")} style={styles.topImage}>
-                    <Block right>
-                        <Text h2 bold color='#fff' style={{fontFamily: "Lobster"}}>Bi'Hatıra</Text>
-                    </Block>
-                </ImageBackground> */}
-                {/* <View style={{margin: 10, flexDirection: "row", justifyContent: "space-between"}}>
-                    <Input placeholder='Ara' status={"primary"} style={styles.searchInput} />
-                    <Button>Ara</Button>
-                </View> */}
-                {/* <View style={{alignItems: "center"}}>
-                    <Input 
-                        accessoryLeft={(props) => <Icon name='search' size={24}/>} 
-                        placeholder='Ara'
-                        status={"primary"}
-                        style={styles.searchInput}
-                    />
-                </View> */}
-                <View style={styles.searchSection}>
-                    <Icon style={styles.searchIcon} name="ios-search" size={20} color="#7f7f7f" />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Lokasyon Ara"
-                        underlineColorAndroid="transparent"
-                    />
-                </View>
-
-
-                <View style={styles.root}>
-                    {Object.keys(groupLocations).map(k => (
-                        <View style={styles.locationList}>
-                            <KittenText style={styles.textHeader}>{k}</KittenText>
-                            <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }} horizontal style={{ flexGrow: 1 }}>
-                                {groupLocations[k]?.slice(0, 5).map(location => (
-                                    <LocationCard card={location} navigation={navigation} />
-                                ))}
-                            </ScrollView>
+            <FlatList
+                data={locations}
+                renderItem={({ item }) => <RenderLocationItem item={item} />}
+                keyExtractor={item => item._id}
+                onEndReached={getMoreLocations}
+                ListFooterComponent={indicator}
+                ListHeaderComponent={
+                    <View>
+                        <View style={styles.searchSection}>
+                            <Icon style={styles.searchIcon} name="ios-search" size={20} color="#7f7f7f" />
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Lokasyon Ara"
+                                underlineColorAndroid="transparent"
+                                onPressIn={() => {navigation.navigate(ROUTES.Search)}}
+                            />
                         </View>
-                    ))}
-                    <View style={{ marginTop: 50 }}>
-                        <KittenText style={{ ...GlobalStyles.textHeader, fontFamily: "AlongSansExtraBold" }}>Senin İçin 🎉</KittenText>
-                        <FlatList
-                            data={locations}
-                            renderItem={({ item }) => <RenderLocationItem loc={item} />}
-                            keyExtractor={item => item._id}
-                            onEndReached={getMoreLocations}
-                            ListFooterComponent = {indicator}
-                        />
+                        <View style={styles.root}>
+                            {Object.keys(groupLocations).map(k => (
+                                <View style={styles.locationList}>
+                                    <KittenText style={styles.textHeader}>{k}</KittenText>
+                                    <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }} horizontal style={{ flexGrow: 1 }}>
+                                        {groupLocations[k]?.slice(0, 5).map(location => (
+                                            <LocationCard card={location} navigation={navigation} />
+                                        ))}
+                                    </ScrollView>
+                                </View>
+                            ))}
+                            <View style={{ marginTop: 50 }}>
+                                <KittenText style={{ ...GlobalStyles.textHeader, fontFamily: "AlongSansExtraBold" }}>Senin İçin 🎉</KittenText>
+                            </View>
+                        </View>
                     </View>
-                </View>
-            </ScrollView>
+                }
+            />
         </View>
     )
 }

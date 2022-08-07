@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import React from "react"
 import DiscoverScreen from "../screens/DiscoverScreen"
+import FilterScreen from "../screens/FilterScreen"
 import LocationCommentListScreen from "../screens/location/LocationCommentListScreen"
 import LocationDetailScreen from "../screens/location/LocationDetailScreen"
 import LocationInnerDetail from "../screens/location/LocationInnerDetail"
@@ -16,6 +17,7 @@ const DiscoverStack:React.FC<any> = () => {
             <Stack.Screen name={ROUTES.LocationDetail} component={LocationDetailScreen} />
             <Stack.Screen name={ROUTES.LocationInnerDetail} component={LocationInnerDetail} />
             <Stack.Screen name={ROUTES.LocationComments} component={LocationCommentListScreen} />
+            <Stack.Screen name={ROUTES.Search} component={FilterScreen} />
         </Stack.Navigator>
     )
 }

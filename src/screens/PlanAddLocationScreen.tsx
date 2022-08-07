@@ -20,6 +20,7 @@ import { TripModel } from '../types/TripModel'
 import { addFetch, FETCH_REQUESTS } from '../store/api'
 
 const tripService = new TripService()
+const locationService = new LocationService()
 const PlanAddLocationScreen = ({ route, navigation }) => {
     const [trip, setTrip] = useState(route.params.trip)
     const [searchText, setSearchText] = useState<string>("")
@@ -30,12 +31,15 @@ const PlanAddLocationScreen = ({ route, navigation }) => {
     const [locationTypes, setLocationTypes] = useState<LocationType[]>([])
     const [isLoading, setIsLoading] = useState<string[]>([])
     const [showOnlyExists, setShowOnlyExists] = useState<boolean>(false)
-
+    const [locations, setLocations] = useState<Location[] | null>(null)
     const { user } = useSelector((state: RootState) => state.user);
-    const { locations } = useSelector((state: RootState) => state.locations);
+    // const { locations } = useSelector((state: RootState) => state.locations);
 
     const dispatch = useDispatch()
     useEffect(() => {
+        locationService.getAll({size: 100}).then(res => {
+            setLocations(res.data.data as Location[])
+        })
         if (!locationTypes || locationTypes.length == 0) {
             new LocationService().getAllTypes().then(res => {
                 const types = res.data.data as LocationType[]
@@ -51,8 +55,9 @@ const PlanAddLocationScreen = ({ route, navigation }) => {
     }, [])
 
     useEffect(() => {
+        if(locations == null) return;
         let _locations = locations
-        if(showOnlyExists) {
+        if (showOnlyExists) {
             _locations = _locations.filter(l => trip.locations.some(x => x._id == l._id))
         }
         if (selectedCity.row != 0) {
@@ -65,7 +70,7 @@ const PlanAddLocationScreen = ({ route, navigation }) => {
             _locations = _locations.filter(l => l.name.toLowerCase().includes(searchText.toLowerCase()))
         }
         setFilteredLocations(_locations)
-    }, [selectedCity, selectedType, searchText, showOnlyExists])
+    }, [locations, selectedCity, selectedType, searchText, showOnlyExists])
 
     const handleAddLocation = (location) => {
         setIsLoading([...isLoading, location._id])
@@ -73,7 +78,7 @@ const PlanAddLocationScreen = ({ route, navigation }) => {
             tripService.getTripById(trip.userId, trip._id).then(res => {
                 setTrip(res.data.data)
                 setIsLoading(s => s.filter(x => x != location._id))
-                dispatch(addFetch(FETCH_REQUESTS.TRIP_DETAIL))   
+                dispatch(addFetch(FETCH_REQUESTS.TRIP_DETAIL))
             })
         })
     }
@@ -138,7 +143,7 @@ const PlanAddLocationScreen = ({ route, navigation }) => {
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.topbar}>
                 <Text style={{ fontFamily: "AlongSansExtraBold", fontSize: 24 }}>Bi'Hatira</Text>
-                <Button appearance={"ghost"}>Kapat</Button>
+                <Button appearance={"ghost"} onPress={() => navigation.goBack()}>Kapat</Button>
             </View>
             <View style={{ padding: 10, flex: 1 }}>
                 <Input
@@ -183,9 +188,7 @@ const PlanAddLocationScreen = ({ route, navigation }) => {
                     onChange={() => setShowOnlyExists(!showOnlyExists)}
                     style={{ marginHorizontal: 5 }}
                 >Sadece planda var olanları göster</CheckBox>
-                <ScrollView>
-                    <List data={filteredLocations} renderItem={LocationListRenderItem} />
-                </ScrollView>
+                <List data={filteredLocations} renderItem={LocationListRenderItem} />
             </View>
         </SafeAreaView>
     )
