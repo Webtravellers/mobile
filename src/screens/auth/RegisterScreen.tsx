@@ -17,7 +17,10 @@ const RegisterScreen = ({ navigation }) => {
 
     const handleSignupClick = () => {
         const authService = new AuthService()
-        authService.signup(values).then(res => {
+        const name = values?.fullname?.split(' ').slice(0, -1).join(' ')
+        const lastname = values?.fullname?.split(' ').slice(-1).join(' ')
+        const data = {...values, name: name, lastname: lastname}
+        authService.signup(data).then(res => {
             SuccessAlert({
                 text: res.data.message,
                 onPress: () => {

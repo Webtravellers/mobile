@@ -44,7 +44,7 @@ const ProfileScreen = ({navigation}) => {
                     </ImageBackground>
                 </View>
                 <View style={styles.userInfo}>
-                    <Text style={styles.userName}>{user?.name + " " + user?.lastname}</Text>
+                    <Text style={styles.userName}>{[user?.name, user?.lastname, user?.fullname].filter(x => x).join(" ")}</Text>
                     <View style={styles.follow}>
                         <Button
                             appearance={'ghost'}
@@ -66,11 +66,19 @@ const ProfileScreen = ({navigation}) => {
                 </View>
                 <View style={{ margin: 20, marginTop: 0 }}>
                     <Text style={{ color: "#414b52" }}>
-                        {user?.bio}
+                        {user?.bio ?? "Burası eskiden dutluktu"}
                     </Text>
                 </View>
+                <View>
+                    <Button status={"basic"} appearance={"ghost"} onPress={() => navigation.navigate(ROUTES.UpdateProfile)}>Profili Düzenle</Button>
+                </View>
                 <View style={styles.userPost}>
-                    <Text style={[GlobalStyles.textHeader, { fontSize: 20 }]}>Gönderiler 📌</Text>
+                    <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+                        <Text style={[GlobalStyles.textHeader, { fontSize: 20 }]}>Gönderiler 📌</Text>
+                        <Button status={"primary"} appearance={"ghost"} onPress={() => navigation.navigate(ROUTES.PostCreate)}>
+                            <Text>Yeni</Text>
+                        </Button>
+                    </View>
                     {posts == null ? <ActivityIndicator size="large" color="#0000ff" /> : (
                         <List
                             data={posts}

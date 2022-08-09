@@ -23,7 +23,7 @@ const PostCard = (props) => {
     const dispatch = useDispatch()
 
     const LikeButton = () => (
-        post.likes.includes(user?._id) ? (
+        post.likes?.includes(user?._id) ? (
             <AIcon name='like1' color={"green"} size={20} />
         ) : (
             <AIcon name='like2' size={20} />
@@ -43,7 +43,7 @@ const PostCard = (props) => {
         <View style={styles.root}>
             <View style={styles.cardHeader}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Image source={{ uri: post.postedBy.photo }} style={styles.userPhoto} />
+                    <Image source={{ uri: post.postedBy?.photo }} style={styles.userPhoto} />
                     <View>
                         <Text bold>{post.postedBy?.name + " " + post.postedBy?.lastname}</Text>
                         <Text muted>@{post.postedBy?.username}</Text>
@@ -62,7 +62,7 @@ const PostCard = (props) => {
                     accessoryLeft={LikeButton}
                     onPress={handleLikeClick}
                 >
-                    {post.likes.length ?? "0"}
+                    {post.likes?.length ?? "0"}
                 </Button>
                 <Button
                     status={"basic"}

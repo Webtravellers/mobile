@@ -11,4 +11,8 @@ export class UserService {
     public toggleLocationFavorite(userId: string, locationId: string): Promise<AxiosResponse<any, any>> {
         return api().post(endpoint + `${userId}/favorites/${locationId}`);
     } 
+
+    public updateProfile(userId: string, profile: any, token): Promise<AxiosResponse<any, any>> {
+        return api().post(endpoint + userId+"/update", profile, {headers: {'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${token}`}});
+    }
 }

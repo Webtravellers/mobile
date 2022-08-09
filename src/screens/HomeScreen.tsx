@@ -6,19 +6,14 @@ const { width } = Dimensions.get("screen")
 
 const HomePage:React.FC<any> = ({ navigation }) => {
     return (
-        <ScrollView style={styles.posts}>
-            <PostCard />
-            <PostCard />
-            <PostCard />
-        </ScrollView>
+        <View style={styles.posts}>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     posts: {
         flex: 1,
-        paddingHorizontal: 10,
-        fontFamily: "AlongSans"
     }
 })
 export default HomePage

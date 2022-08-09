@@ -19,4 +19,12 @@ export class PostService {
     public createPostComment(postId, comment): Promise<AxiosResponse<any, any>> {
         return api().post(endpoint + postId + "/comments", comment)
     }
+
+    public getAllPosts(skip=0): Promise<AxiosResponse<any, any>> {
+        return api().get(endpoint + "?skip=" + skip)
+    }
+
+    public newPost(userId, post): Promise<AxiosResponse<any, any>> {
+        return api().post(endpoint+userId, post, {headers: {'Content-Type': 'multipart/form-data'}})
+    }
 }
